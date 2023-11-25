@@ -1,0 +1,148 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// 
+
+model Farmer {
+  id              String             @id @default(uuid())
+  landTitle       String             @db.Text
+  landLocation    String             @db.Text
+  khasraNumber    Int                @db.Int
+  totalArea       Float
+  perSqCost       Float
+  totalLandCost   Float?
+  remainingAmount Float?
+  isPayment       Boolean            @default(false)
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+  farmerDetails   FarmerDetails?
+  farmerNotes     farmerOtherNotes[]
+  farmerPayments  FarmerPayment[]
+  attachments     Attachment[]
+
+  @@index([id])
+}
+
+model FarmerDetails {
+  id             String   @id @default(uuid())
+  fName          String?  @db.Text
+  lName          String?  @db.Text
+  address        String?  @db.Text
+  city           String?  @db.Text
+  state          String?  @db.Text
+  pinCode        Int?
+  phoneNumber    String?  @db.Text
+  aadharNumber   String?  @db.Text
+  docsProoURL    String?  @db.Text
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  farmerDetailId String   @unique
+  farmer         Farmer   @relation(fields: [farmerDetailId], references: [id], onDelete: Cascade)
+}
+
+model farmerOtherNotes {
+  id String @id @default(uuid())
+
+  notes      String?  @db.Text
+  someUrl    String?  @db.Text
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  farmerNote Farmer   @relation(fields: [noteId], references: [id], onDelete: Cascade)
+  noteId     String
+}
+
+model FarmerPayment {
+  payId          String   @id @default(uuid())
+  tottalAmount   Float?
+  paidAmount     Float?
+  leftAmount     Float?
+  particular     String?  @db.Text
+  notes          String?  @db.Text
+  paymentGivenBy String?  @db.Text
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  userId         String
+  farmerPayId    String
+
+  farmerPayment   Farmer  @relation(fields: [farmerPayId], references: [id], onDelete: Cascade)
+  userUuid        String?
+  isPaymentAdded  Boolean @default(false)
+  paymentType     String? @db.Text
+  paymentMode     String? @db.Text
+  paymentModeId   String? @db.Text
+  paymentModeInfo String? @db.Text
+}
+
+model User {
+  uuid          String  @id @default(uuid())
+  userId        String?
+  userName      String? @db.Text
+  firstName     String? @db.Text
+  lastName      String? @db.Text
+  isPaymentType Boolean @default(false)
+  phoneNumber   String? @db.Text
+  email         String? @db.Text
+
+  userAccounts userAccount[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model userAccount {
+  accId               String  @id @default(uuid())
+  isPaymentTypeCredit Boolean @default(false)
+  isPaymentTypeDebit  Boolean @default(false)
+  paymentFor          String? @db.Text
+  totalBalance        Float?
+  creditAmount        Float?
+  debitAmount         Float?
+  paymentFrom         String? @db.Text
+  paymentTo           String? @db.Text
+
+  isPaymentAdded  Boolean @default(false)
+  paymentType     String? @db.Text
+  paymentMode     String? @db.Text
+  paymentModeId   String? @db.Text
+  paymentModeInfo String? @db.Text
+  payId           String? @unique
+
+  // paymentMethods  paymentMethod? @relation(fields: [paymentMethodId], references: [id])
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  userId          String
+  users           User     @relation(fields: [userId], references: [uuid], onDelete: Cascade)
+  paymentMethodId String?
+}
+
+// model paymentMethod {
+//   id              String        @id @default(uuid())
+//   paymentType     String?       @db.Text
+//   paymentMode     String?       @db.Text
+//   paymentModeId   String?       @db.Text
+//   paymentModeInfo String?       @db.Text
+//   createdAt       DateTime      @default(now())
+//   updatedAt       DateTime      @updatedAt
+//   FarmerPaymentId String        @unique
+//   userAccount     userAccount[]
+// }
+
+model Attachment {
+  id   String @id @default(uuid())
+  name String
+  url  String @db.Text
+
+  farmerId String
+  farmer   Farmer @relation(fields: [farmerId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([farmerId])
+}
