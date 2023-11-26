@@ -96,29 +96,26 @@ model User {
 }
 
 model userAccount {
-  accId               String  @id @default(uuid())
-  isPaymentTypeCredit Boolean @default(false)
-  isPaymentTypeDebit  Boolean @default(false)
-  paymentFor          String? @db.Text
+  accId               String   @id @default(uuid())
+  isPaymentTypeCredit Boolean  @default(false)
+  isPaymentTypeDebit  Boolean  @default(false)
+  paymentFor          String?  @db.Text
   totalBalance        Float?
   creditAmount        Float?
   debitAmount         Float?
-  paymentFrom         String? @db.Text
-  paymentTo           String? @db.Text
-
-  isPaymentAdded  Boolean @default(false)
-  paymentType     String? @db.Text
-  paymentMode     String? @db.Text
-  paymentModeId   String? @db.Text
-  paymentModeInfo String? @db.Text
-  payId           String? @unique
-
-  // paymentMethods  paymentMethod? @relation(fields: [paymentMethodId], references: [id])
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  userId          String
-  users           User     @relation(fields: [userId], references: [uuid], onDelete: Cascade)
-  paymentMethodId String?
+  paymentFrom         String?  @db.Text
+  ForToName           String?  @db.Text
+  paymentTo           String?  @db.Text
+  isPaymentAdded      Boolean  @default(false)
+  paymentType         String?  @db.Text
+  paymentMode         String?  @db.Text
+  paymentModeId       String?  @db.Text
+  paymentModeInfo     String?  @db.Text
+  payId               String?  @unique
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  userId              String
+  users               User     @relation(fields: [userId], references: [uuid], onDelete: Cascade)
 }
 
 // model paymentMethod {

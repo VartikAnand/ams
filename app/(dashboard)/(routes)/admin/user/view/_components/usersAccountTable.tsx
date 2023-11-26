@@ -22,14 +22,15 @@ import {
   SortDescriptor,
 } from "@nextui-org/react";
 
-import { Plus, Search, Trash2, Eye, Trash } from "lucide-react";
+import { Plus, MoreVertical, Search } from "lucide-react";
 
-import { columns, statusOptions } from "/utils/userTable.ts";
+import { columns, statusOptions } from "/utils/usersAccounts.ts";
 import { capitalize } from "/utils/table";
 import { toast } from "sonner";
+import { Trash2 } from "lucide-react";
 import { Add } from "./(action)/add";
 import { Delete } from "./(action)/delete";
-import { useRouter } from "next/navigation";
+import { TopContent } from "./topContent";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   true: "success",
@@ -39,27 +40,33 @@ const statusColorMap: Record<string, ChipProps["color"]> = {
 type UserData = (typeof users)[0];
 
 const INITIAL_VISIBLE_COLUMNS = [
-  "fullName",
-  "phoneNumber",
-  "email",
+  "amount",
+  "paymentType",
+  "paymentFromTo",
+  "ForToName",
+  "paymentMode",
   "createdAt",
   "actions",
 ];
-type userData = {
-  uuid: string;
-  firstName: string;
-  lastName: string;
-  userName: string;
-  phoneNumber: number;
-  email: string;
-  createdAt: date;
+type LandPaymentData = {
+  payId: string;
+  paidAmount: number;
+  paymentType: string;
+  particular: string;
+  paymentGivenBy: string;
+  paymentMode: string;
+  isPaymentAdded: boolean;
+  perSqCost: number;
+  totalLandCost: number;
+  remainingAmount: number;
 };
-interface UserTableProps {
+interface PaymentTableProps {
+  userId: string;
   userData: string;
-  initialData: userData[];
+  initialData: LandPaymentData[];
 }
 
-export const UserTable = ({ initialData, userData }: UserTableProps) => {
+export const UsersAccountTable = ({ userId, initialData, userData }) => {
   const [filterValue, setFilterValue] = useState<string>("");
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]));
   const [visibleColumns, setVisibleColumns] = useState<Selection>(
@@ -71,7 +78,7 @@ export const UserTable = ({ initialData, userData }: UserTableProps) => {
     column: "createdAt",
     direction: "descending",
   });
-  const router = useRouter();
+
   const [page, setPage] = useState<number>(1);
 
   const hasSearchFilter = Boolean(filterValue);
@@ -89,7 +96,7 @@ export const UserTable = ({ initialData, userData }: UserTableProps) => {
 
     if (hasSearchFilter) {
       filteredData = filteredData.filter((land) =>
-        land.firstName?.toLowerCase().includes(filterValue.toLowerCase())
+        land.paymentGivenBy?.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
     if (
@@ -102,7 +109,7 @@ export const UserTable = ({ initialData, userData }: UserTableProps) => {
     }
 
     return filteredData;
-  }, [initialData, hasSearchFilter, statusFilter, filterValue]);
+  }, [initialData, filterValue, statusFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -125,39 +132,64 @@ export const UserTable = ({ initialData, userData }: UserTableProps) => {
 
   const renderCell = useCallback((user: UserData, columnKey: React.Key) => {
     const cellValue = user[columnKey as keyof UserData];
+
+    // console.log(user);
     switch (columnKey) {
-      // fullName
-      case "fullName":
-        return <p>{`${user.firstName} ${user.lastName}`}</p>;
-
-      //userName
-      case "userName":
-        return <p>{user?.userName}</p>;
-
-      // firstName
-      case "firstName":
-        return <p>{user?.firstName}</p>;
-      //lastName
-      case "lastName":
-        return <p>{user?.lastName}</p>;
-      //is admin
-      case "isAdmin":
+      //paid amount
+      case "amount":
         return (
-          <Chip
-            className="capitalize px-2 py-1"
-            color={statusColorMap[user.isAdmin]}
-            size="sm"
-            variant="bordered"
-          >
-            {user?.isAdmin ? "Given" : "pending"}
-          </Chip>
+          <p>
+            &#8377;
+            {user?.creditAmount?.toLocaleString("en-IN") ||
+              user?.debitAmount?.toLocaleString("en-IN") ||
+              "null"}
+          </p>
         );
-      // phoneNumber
-      case "phoneNumber":
-        return <p>{user?.phoneNumber.substring(2)}</p>;
-      // email
-      case "email":
-        return <p>{user?.email}</p>;
+
+      // particular
+      case "paymentType":
+        return (
+          <>
+            {user?.paymentType === "Debit" ? (
+              <Chip
+                className="capitalize  py-1 px-3"
+                color="danger"
+                size="sm"
+                variant="bordered"
+              >
+                Debit
+              </Chip>
+            ) : (
+              <>
+                <Chip
+                  className="capitalize px-2.5 py-1 mx-auto"
+                  color="primary"
+                  size="sm"
+                  variant="bordered"
+                >
+                  Credit
+                </Chip>
+              </>
+            )}
+          </>
+        );
+      // paymentGivenBy
+      case "paymentFromTo":
+        return <p>{user?.paymentFor || user?.paymentTo || "Null"}</p>;
+
+      case "ForToName":
+        return <p>{user?.ForToName}</p>;
+      case "paymentTo":
+        return <p> {user?.paymentTo}</p>;
+
+      case "paymentMode":
+        return <p>{user?.paymentMode}</p>;
+      // Per sq cost
+      case "paymentModeId":
+        return <p>{user?.paymentModeId}</p>;
+      // Total Land  cost
+      case "paymentModeInfo":
+        return <p> {user?.paymentModeInfo}</p>;
 
       // createdAt
       case "createdAt":
@@ -173,10 +205,11 @@ export const UserTable = ({ initialData, userData }: UserTableProps) => {
         );
       case "actions":
         return (
-          <div className=" flex  flex-row  justify-start items-center gap-2 pl-4">
-            <Delete userAccountId={user.uuid} />
+          <div className=" flex justify-start items-center gap-2 pl-4">
+            <Delete farmerPaymentId={user} />
           </div>
         );
+
       default:
         return cellValue;
     }
@@ -257,10 +290,10 @@ export const UserTable = ({ initialData, userData }: UserTableProps) => {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Add userData={userData} />
+            {/* <Add userData={userId} /> */}
           </div>
         </div>
-        {/* <TopContent initialData={initialData} farmerData={farmerData} /> */}
+        <TopContent initialData={initialData} userData={userData} />
 
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small mx-2">
@@ -329,9 +362,9 @@ export const UserTable = ({ initialData, userData }: UserTableProps) => {
   return (
     <div className="lg:mx-5 mx-2 ">
       <Table
-        onRowAction={(key) => router.push(`/admin/user/view/${key}`)}
+        // onRowAction={(key) => toast.success("Success")}
         isCompact
-        aria-label="farmer table"
+        aria-label="user table"
         isHeaderSticky
         bottomContent={bottomContent}
         bottomContentPlacement="outside"
@@ -362,7 +395,7 @@ export const UserTable = ({ initialData, userData }: UserTableProps) => {
           items={sortedItems}
         >
           {(item) => (
-            <TableRow key={item.uuid}>
+            <TableRow key={item.payId}>
               {(columnKey) => (
                 <TableCell key={columnKey}>
                   {renderCell(item, columnKey)}

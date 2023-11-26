@@ -6,23 +6,26 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 interface SaveProps {
   farmerPaymentId: string;
+  farmer: string;
 }
 
-export const Save = ({ farmerPaymentId }: SaveProps) => {
+export const Save = ({ farmerPaymentId, farmer }: SaveProps) => {
   const router = useRouter();
-
   const handleSave = async () => {
     try {
+      const fromToData = `Kashar No.  ${farmer.khasraNumber} `;
+      const payToName = `${farmer.farmerDetails.fName} ${farmer.farmerDetails.lName}`;
       const response = await axios.post(
         `/api/user/${farmerPaymentId.userUuid}`,
         {
           // userId: farmerPaymentId.userUuid,
           isPaymentTypeDebit: true,
           paymentFor: "Farmer",
+          ForToName: fromToData,
           payId: farmerPaymentId.payId,
           debitAmount: farmerPaymentId.paidAmount,
           paymentFrom: farmerPaymentId.paymentGivenBy,
-          paymentTo: "",
+          paymentTo: payToName,
           isPaymentAdded: true,
           paymentType: farmerPaymentId.paymentType,
           paymentMode: farmerPaymentId.paymentMode,

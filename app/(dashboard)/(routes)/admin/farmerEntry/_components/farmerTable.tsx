@@ -24,8 +24,8 @@ import {
 
 import { Plus, MoreVertical, Search } from "lucide-react";
 
-import { columns, statusOptions } from "/utils/data.ts";
-import { capitalize } from "/utils/tabel.ts";
+import { columns, statusOptions } from "./data";
+import { capitalize } from "/utils/table";
 import { toast } from "sonner";
 import { FarmerTableAction } from "./farmerTableAction";
 import Link from "next/link";
@@ -34,8 +34,20 @@ const statusColorMap: Record<string, ChipProps["color"]> = {
   true: "success",
   false: "warning",
 };
-
-type UserData = (typeof users)[0];
+type UserData = {
+  khasraNumber: number;
+  landTitle: string;
+  landLocation: string;
+  totalArea: number;
+  perSqCost: number;
+  totalLandCost: number;
+  remainingAmount: number;
+  createdAt: Date;
+  isPayment: boolean;
+  farmerPayments: Array<{
+    paidAmount: number | null;
+  }>;
+};
 
 const INITIAL_VISIBLE_COLUMNS = [
   "khasraNumber",

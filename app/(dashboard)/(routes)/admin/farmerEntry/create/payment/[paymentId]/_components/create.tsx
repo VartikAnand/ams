@@ -30,7 +30,7 @@ const Create = async ({ farmerId, payId, initialData }: CreatePaymentProps) => {
       id: farmerId,
     },
     include: {
-      farmerPayments: true,
+      farmerDetails: true,
       farmerPayments: {
         orderBy: {
           createdAt: "desc",
@@ -76,7 +76,7 @@ const Create = async ({ farmerId, payId, initialData }: CreatePaymentProps) => {
         </div>
         <div className="flex flex-row gap-y-2 gap-2">
           {completedFields === totalFields ? (
-            <Save farmerPaymentId={farmer.farmerPayments[0]} />
+            <Save farmer={farmer} farmerPaymentId={farmer.farmerPayments[0]} />
           ) : (
             <Button
               isDisabled

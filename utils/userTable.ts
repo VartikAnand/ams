@@ -6,6 +6,7 @@ const statusOptions = [
 ];
 
 const columns = [
+  { name: "Full Name", uid: "fullName", sortable: true },
   { name: "User Name", uid: "userName", sortable: true },
   { name: "First Name", uid: "firstName", sortable: true },
   { name: "Last Name", uid: "lastName", sortable: true },

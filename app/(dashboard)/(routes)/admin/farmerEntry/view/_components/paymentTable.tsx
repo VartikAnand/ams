@@ -25,7 +25,7 @@ import {
 import { Plus, MoreVertical, Search } from "lucide-react";
 
 import { columns, statusOptions } from "/utils/paymentData.ts";
-import { capitalize } from "/utils/tabel.ts";
+import { capitalize } from "/utils/table";
 import { toast } from "sonner";
 import { Trash2 } from "lucide-react";
 import { Add } from "./(action)/add";

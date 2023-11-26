@@ -1,12 +1,12 @@
 "use client";
 import { useState } from "react";
-import { CreateFarmerForm } from "./(farmerDetails)/CreateFarmerForm";
 import { Divider, Button } from "@nextui-org/react";
 import { AlertTriangle, StickyNote } from "lucide-react";
 import { AddressForm } from "./(farmerDetails)/addressForm";
 import { PhoneNumberForm } from "./(farmerDetails)/phoneNumberForm";
 import { AadhaarNumberForm } from "./(farmerDetails)/aadhaarNumberForm";
 import CreateDoc from "./(farmerOtherDoc)/createDoc";
+import { CreateFarmerForm } from "./(farmerDetails)/createFarmerForm";
 
 interface farmerDetailPageFormProps {
   initialData: {
