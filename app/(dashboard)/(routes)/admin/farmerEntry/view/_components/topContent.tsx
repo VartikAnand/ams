@@ -23,7 +23,6 @@ export const TopContent = ({ initialData, farmerData }) => {
   const totalPaidAmount = farmerData.farmerPayments
     .filter((payment) => payment.paidAmount !== null)
     .reduce((sum, payment) => sum + (payment.paidAmount || 0), 0);
-
   const leftAmount = farmerData.totalLandCost - totalPaidAmount;
 
   return (
@@ -64,9 +63,7 @@ export const TopContent = ({ initialData, farmerData }) => {
             <h6 className="text-sm font-medium text-primary-500 ">Remaining</h6>
             <div className="flex text-2xl items-center justify-center gap-1 font-semibold ">
               <span className="text-default-500 text-3xl">&#8377;</span>
-              {leftAmount
-                ? formatArea(leftAmount)
-                : formatArea(farmerData.totalLandCost)}
+              {leftAmount}
             </div>
           </div>
         </div>

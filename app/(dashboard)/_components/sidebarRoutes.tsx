@@ -88,7 +88,7 @@ const adminRoutes = [
   {
     icon: Ratio,
     label: "Plot Selling Entry",
-    href: "/admin/plotSelling",
+    href: "/admin/plot",
   },
   {
     icon: Landmark,
