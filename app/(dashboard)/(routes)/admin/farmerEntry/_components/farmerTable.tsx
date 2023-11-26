@@ -25,7 +25,6 @@ import {
 import { Plus, MoreVertical, Search } from "lucide-react";
 
 import { columns, statusOptions } from "./data";
-import { capitalize } from "/utils/table";
 import { toast } from "sonner";
 import { FarmerTableAction } from "./farmerTableAction";
 import Link from "next/link";
@@ -43,7 +42,7 @@ type UserData = {
   totalLandCost: number;
   remainingAmount: number;
   createdAt: Date;
-  isPayment: boolean;
+  isPayment: string;
   farmerPayments: Array<{
     paidAmount: number | null;
   }>;
@@ -66,13 +65,17 @@ type LandData = {
   perSqCost: number;
   totalLandCost: number;
   remainingAmount: number;
+  status: string;
 };
 interface FarmerTableProps {
   farmerId: string;
   initialData: LandData[];
 }
+export function capitalize(str: string): string {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
 
-export const FarmerTable = ({ farmerId, initialData }) => {
+export const FarmerTable = ({ farmerId, initialData }: FarmerTableProps) => {
   const router = useRouter();
 
   const [filterValue, setFilterValue] = useState<string>("");
@@ -129,9 +132,9 @@ export const FarmerTable = ({ farmerId, initialData }) => {
   }, [page, filteredItems, rowsPerPage]);
 
   const sortedItems = useMemo(() => {
-    return [...items].sort((a: UserData, b: UserData) => {
-      const first = a[sortDescriptor.column as keyof UserData] as number;
-      const second = b[sortDescriptor.column as keyof UserData] as number;
+    return [...items].sort((a: LandData, b: LandData) => {
+      const first = a[sortDescriptor.column as keyof LandData] as number;
+      const second = b[sortDescriptor.column as keyof LandData] as number;
       const cmp = first < second ? -1 : first > second ? 1 : 0;
 
       return sortDescriptor.direction === "descending" ? -cmp : cmp;
