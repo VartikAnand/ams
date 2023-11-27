@@ -94,7 +94,7 @@ const CreateFarmer = () => {
               label="Kashar Number"
               variant="flat"
               isRequired
-              color={formState.errors.landTitle ? "danger" : "primary"}
+              color={formState.errors.khasraNumber ? "danger" : "primary"}
               isInvalid={!!formState.errors.khasraNumber}
               errorMessage={formState.errors.khasraNumber?.message}
             />
@@ -132,7 +132,7 @@ const CreateFarmer = () => {
             isRequired
             label="Land Location"
             variant="flat"
-            color={formState.errors.landTitle ? "danger" : "primary"}
+            color={formState.errors.landLocation ? "danger" : "primary"}
             isInvalid={!!formState.errors.landLocation}
             errorMessage={formState.errors.landLocation?.message}
           />
@@ -151,7 +151,7 @@ const CreateFarmer = () => {
               isRequired
               label="Total Area"
               variant="flat"
-              color={formState.errors.landTitle ? "danger" : "primary"}
+              color={formState.errors.totalArea ? "danger" : "primary"}
               isInvalid={!!formState.errors.totalArea}
               errorMessage={formState.errors.totalArea?.message}
             />
@@ -170,7 +170,7 @@ const CreateFarmer = () => {
               size="sm"
               isRequired
               variant="flat"
-              color={formState.errors.landTitle ? "danger" : "primary"}
+              color={formState.errors.perSqCost ? "danger" : "primary"}
               isInvalid={!!formState.errors.perSqCost}
               errorMessage={formState.errors.perSqCost?.message}
             />

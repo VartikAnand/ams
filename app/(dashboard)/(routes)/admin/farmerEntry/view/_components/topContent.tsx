@@ -44,7 +44,7 @@ export const TopContent = ({ initialData, farmerData }) => {
             <h6 className="text-sm font-medium text-primary-500 ">
               Total Paid
             </h6>
-            <div className="flex text-2xl items-center justify-center gap-1 font-semibold ">
+            <div className="flex text-2xl text-default-500  items-center justify-center gap-1 font-semibold ">
               <span className="text-default-500 text-3xl">&#8377;</span>
               {formatArea(farmerData.totalLandCost)}
             </div>
@@ -61,7 +61,7 @@ export const TopContent = ({ initialData, farmerData }) => {
 
           <div className="flex flex-col gap-1">
             <h6 className="text-sm font-medium text-primary-500 ">Remaining</h6>
-            <div className="flex text-2xl items-center justify-center gap-1 font-semibold ">
+            <div className="flex  text-default-500 text-2xl items-center justify-center gap-1 font-semibold ">
               <span className="text-default-500 text-3xl">&#8377;</span>
               {leftAmount}
             </div>
@@ -81,7 +81,7 @@ export const TopContent = ({ initialData, farmerData }) => {
             <h6 className="text-sm font-medium text-primary-500 ">
               Total Area
             </h6>
-            <div className="flex text-2xl items-center justify-center gap-1 font-semibold ">
+            <div className="flex text-default-500  text-2xl items-center justify-center gap-1 font-semibold ">
               <span className="text-default-500 text-3xl">&#8377;</span>
               {formatArea(farmerData.totalArea)}
             </div>

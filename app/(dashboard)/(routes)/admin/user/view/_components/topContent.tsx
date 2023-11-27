@@ -61,8 +61,10 @@ export const TopContent = ({ initialData, userData }) => {
           <div className="flex flex-col gap-1">
             <h6 className="text-sm font-medium text-primary-500 ">Balance</h6>
             <div className="flex text-2xl items-center justify-center gap-1 font-semibold">
-              <span className="text-default-500 text-3xl">&#8377;</span>
-              <p className={textColorClass}>{formatArea(balanceAmount)}</p>
+              <div className={`flex ${textColorClass}`}>
+                <span className="text-3xl">&#8377;</span>
+                <p>{formatArea(balanceAmount)}</p>
+              </div>
             </div>
           </div>
         </div>
@@ -77,7 +79,7 @@ export const TopContent = ({ initialData, userData }) => {
 
           <div className="flex flex-col gap-1">
             <h6 className="text-sm font-medium text-primary-500 ">Debit</h6>
-            <div className="flex text-2xl items-center justify-center gap-1 font-semibold ">
+            <div className="flex text-default-500  text-2xl items-center justify-center gap-1 font-semibold ">
               <span className="text-default-500 text-3xl">&#8377;</span>
               {formatArea(totalPaidAmount)}
             </div>
@@ -95,7 +97,7 @@ export const TopContent = ({ initialData, userData }) => {
 
           <div className="flex flex-col gap-1">
             <h6 className="text-sm font-medium text-primary-500 ">Credit</h6>
-            <div className="flex text-2xl items-center justify-center gap-1 font-semibold ">
+            <div className="flex text-default-500  text-2xl items-center justify-center gap-1 font-semibold ">
               <span className="text-default-500 text-3xl">&#8377;</span>
               {formatArea(totalCreditAmount)}
             </div>

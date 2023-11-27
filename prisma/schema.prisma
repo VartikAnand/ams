@@ -7,8 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// 
-
 model Farmer {
   id              String             @id @default(uuid())
   landTitle       String             @db.Text
@@ -47,8 +45,7 @@ model FarmerDetails {
 }
 
 model farmerOtherNotes {
-  id String @id @default(uuid())
-
+  id         String   @id @default(uuid())
   notes      String?  @db.Text
   someUrl    String?  @db.Text
   createdAt  DateTime @default(now())
@@ -58,41 +55,38 @@ model farmerOtherNotes {
 }
 
 model FarmerPayment {
-  payId          String   @id @default(uuid())
-  tottalAmount   Float?
-  paidAmount     Float?
-  leftAmount     Float?
-  particular     String?  @db.Text
-  notes          String?  @db.Text
-  paymentGivenBy String?  @db.Text
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  userId         String
-  farmerPayId    String
-
-  farmerPayment   Farmer  @relation(fields: [farmerPayId], references: [id], onDelete: Cascade)
+  payId           String   @id @default(uuid())
+  tottalAmount    Float?
+  paidAmount      Float?
+  leftAmount      Float?
+  particular      String?  @db.Text
+  notes           String?  @db.Text
+  paymentGivenBy  String?  @db.Text
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  userId          String
+  farmerPayId     String
+  farmerPayment   Farmer   @relation(fields: [farmerPayId], references: [id], onDelete: Cascade)
   userUuid        String?
-  isPaymentAdded  Boolean @default(false)
-  paymentType     String? @db.Text
-  paymentMode     String? @db.Text
-  paymentModeId   String? @db.Text
-  paymentModeInfo String? @db.Text
+  isPaymentAdded  Boolean  @default(false)
+  paymentType     String?  @db.Text
+  paymentMode     String?  @db.Text
+  paymentModeId   String?  @db.Text
+  paymentModeInfo String?  @db.Text
 }
 
 model User {
-  uuid          String  @id @default(uuid())
+  uuid          String        @id @default(uuid())
   userId        String?
-  userName      String? @db.Text
-  firstName     String? @db.Text
-  lastName      String? @db.Text
-  isPaymentType Boolean @default(false)
-  phoneNumber   String? @db.Text
-  email         String? @db.Text
-
-  userAccounts userAccount[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  userName      String?       @db.Text
+  firstName     String?       @db.Text
+  lastName      String?       @db.Text
+  isPaymentType Boolean       @default(false)
+  phoneNumber   String?       @db.Text
+  email         String?       @db.Text
+  userAccounts  userAccount[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
 }
 
 model userAccount {
@@ -118,18 +112,6 @@ model userAccount {
   users               User     @relation(fields: [userId], references: [uuid], onDelete: Cascade)
 }
 
-// model paymentMethod {
-//   id              String        @id @default(uuid())
-//   paymentType     String?       @db.Text
-//   paymentMode     String?       @db.Text
-//   paymentModeId   String?       @db.Text
-//   paymentModeInfo String?       @db.Text
-//   createdAt       DateTime      @default(now())
-//   updatedAt       DateTime      @updatedAt
-//   FarmerPaymentId String        @unique
-//   userAccount     userAccount[]
-// }
-
 model Attachment {
   id   String @id @default(uuid())
   name String
@@ -142,4 +124,55 @@ model Attachment {
   updatedAt DateTime @updatedAt
 
   @@index([farmerId])
+}
+
+model Employee {
+  empId       String   @id @default(uuid())
+  department  String
+  baseSalary  Int
+  joiningDate DateTime
+  payrollType String
+
+  EmployeeDetails EmployeeDetail?
+  empSalary       empSalary[]
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  @@index([empId])
+}
+
+model EmployeeDetail {
+  empDetailId  String   @id @default(uuid())
+  firstName    String?  @db.Text
+  lastName     String?  @db.Text
+  address      String?  @db.Text
+  city         String?  @db.Text
+  state        String?  @db.Text
+  pinCode      Int?
+  phoneNumber  String?  @db.Text
+  aadharNumber String?  @db.Text
+  docsProoURL  String?  @db.Text
+  EmployeeId   String   @unique
+  Employees    Employee @relation(fields: [EmployeeId], references: [empId], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model empSalary {
+  salId           String    @id @default(uuid())
+  salary          Float?
+  bonus           Float?
+  bonusDate       DateTime?
+  deduction       Float?
+  deductionDate   DateTime?
+  netSalary       Float?
+  EmployeeId      String
+  Employees       Employee  @relation(fields: [EmployeeId], references: [empId], onDelete: Cascade)
+  userUuid        String?
+  isPaymentAdded  Boolean   @default(false)
+  paymentType     String?   @db.Text
+  paymentMode     String?   @db.Text
+  paymentModeId   String?   @db.Text
+  paymentModeInfo String?   @db.Text
 }
