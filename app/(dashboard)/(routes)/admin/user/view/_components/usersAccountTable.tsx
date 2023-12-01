@@ -133,7 +133,6 @@ export const UsersAccountTable = ({ userId, initialData, userData }) => {
   const renderCell = useCallback((user: UserData, columnKey: React.Key) => {
     const cellValue = user[columnKey as keyof UserData];
 
-    // console.log(user);
     switch (columnKey) {
       //paid amount
       case "amount":

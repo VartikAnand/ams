@@ -72,10 +72,6 @@ const CreateUser = () => {
       router.refresh();
       reset();
     } catch (err) {
-      if (err) {
-        // console.log("LOG :::", err.response);
-      }
-      // console.error(err);
       toast.error("Try Again! Something went wrong");
     }
   };

@@ -111,7 +111,7 @@ const Emp = () => {
             <Input
               {...form.register("baseSalary")}
               type="text"
-              label="Per Sq.&nbsp;m&sup2;"
+              label="Salary"
               size="sm"
               isRequired
               variant="flat"

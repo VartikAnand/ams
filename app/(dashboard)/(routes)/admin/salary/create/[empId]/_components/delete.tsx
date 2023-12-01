@@ -14,11 +14,11 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import axios from "axios";
 
-interface DeleteFarmerProps {
+interface DeleteProps {
   farmerId: string;
 }
 
-export const DeleteFarmer = ({ farmerId }: DeleteFarmerProps) => {
+export const Delete = ({ farmerId }: DeleteProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
   const handleOpen = () => {
@@ -27,7 +27,7 @@ export const DeleteFarmer = ({ farmerId }: DeleteFarmerProps) => {
 
   const handleDelete = async (farmerId: string) => {
     try {
-      // await axios.delete(`/api/farmers/${farmerId}`);
+      await axios.delete(`/api/farmers/${farmerId}`);
       await toast.promise(
         async () => {
           await new Promise((resolve) => setTimeout(resolve, 1000));

@@ -133,12 +133,12 @@ model Employee {
   joiningDate DateTime
   payrollType String
 
-  EmployeeDetails EmployeeDetail?
+  employeeDetails EmployeeDetail?
   empSalary       empSalary[]
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
 
-  @@index([empId])
+  // @@index([empId])
 }
 
 model EmployeeDetail {
@@ -152,8 +152,8 @@ model EmployeeDetail {
   phoneNumber  String?  @db.Text
   aadharNumber String?  @db.Text
   docsProoURL  String?  @db.Text
-  EmployeeId   String   @unique
-  Employees    Employee @relation(fields: [EmployeeId], references: [empId], onDelete: Cascade)
+  employeeId   String   @unique
+  employees    Employee @relation(fields: [employeeId], references: [empId], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -167,12 +167,15 @@ model empSalary {
   deduction       Float?
   deductionDate   DateTime?
   netSalary       Float?
-  EmployeeId      String
-  Employees       Employee  @relation(fields: [EmployeeId], references: [empId], onDelete: Cascade)
+  employeeId      String
+  employees       Employee  @relation(fields: [employeeId], references: [empId], onDelete: Cascade)
   userUuid        String?
   isPaymentAdded  Boolean   @default(false)
   paymentType     String?   @db.Text
   paymentMode     String?   @db.Text
   paymentModeId   String?   @db.Text
   paymentModeInfo String?   @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
