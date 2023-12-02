@@ -44,9 +44,7 @@ const SidebarItems: React.FC<SidebarItemsProps> = ({
       <div className="flex items-center gap-x-2 py-4">
         <Icon
           size={22}
-          className={`hover:bg-primary-600 ${
-            isActive ? `hover:bg-primary-600` : ""
-          }`}
+          className={` ${isActive ? `hover:bg-primary-600` : ""}`}
         />
         {label}
       </div>

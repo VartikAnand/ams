@@ -11,15 +11,12 @@ import { Button, Input, Textarea } from "@nextui-org/react";
 
 interface AadhaarNumberFormProps {
   initialData: {
-    khasraNumber: string;
-    farmerDetails: {
-      id: string;
-      fName: string;
-      lName: string;
+    EmployeeDetails: {
+      aadharNumber: string;
     };
   };
-  farmerId: {
-    farmerId: string;
+  empId: {
+    empId: string;
   };
 }
 
@@ -35,7 +32,7 @@ const formSchema = z.object({
 });
 
 export const AadhaarNumberForm = ({
-  farmerId,
+  empId,
   initialData,
 }: AadhaarNumberForm) => {
   const router = useRouter();
@@ -50,13 +47,13 @@ export const AadhaarNumberForm = ({
 
   const { isSubmitting, isValid } = form.formState;
 
-  const [isFarmerDetails, setIsFarmerDetails] = useState(
-    initialData.farmerDetails || null
+  const [isEmployeeDetails, setIsEmployeeDetails] = useState(
+    initialData.employeeDetails || null
   );
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       await axios.patch(
-        `/api/farmers/${farmerId}/farmerDetails/${initialData.farmerDetails.id}`,
+        `/api/salary/${initialData.empId}/employeeDetails/${initialData?.employeeDetails.empDetailId}`,
         {
           aadharNumber: values.aadharNumber,
         }
@@ -96,8 +93,8 @@ export const AadhaarNumberForm = ({
       </div>
       {!isEditing && (
         <p className="text-sm mt-2">
-          {initialData?.farmerDetails?.aadharNumber ? (
-            <>{initialData?.farmerDetails?.aadharNumber}</>
+          {initialData?.employeeDetails?.aadharNumber ? (
+            <>{initialData?.employeeDetails?.aadharNumber}</>
           ) : (
             "Aadhaar Number not available"
           )}
@@ -116,7 +113,7 @@ export const AadhaarNumberForm = ({
                   size="sm"
                   isRequired
                   variant="flat"
-                  defaultValue={initialData?.farmerDetails.aadharNumber || ""}
+                  defaultValue={initialData?.employeeDetails.aadharNumber || ""}
                   color={formState.errors.aadharNumber ? "danger" : "primary"}
                   isInvalid={!!formState.errors.aadharNumber}
                   errorMessage={formState.errors.pinCode?.aadharNumber}
@@ -125,7 +122,7 @@ export const AadhaarNumberForm = ({
             </div>
           </div>
           <Button type="submit" color="primary" variant="flat" className="mt-4">
-            {!isFarmerDetails.aadhaarNumber ? "Add" : "Save"}
+            {!isEmployeeDetails.aadhaarNumber ? "Add" : "Save"}
           </Button>
         </form>
       )}

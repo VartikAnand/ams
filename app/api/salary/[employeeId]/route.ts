@@ -30,7 +30,7 @@ export async function PATCH(
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { femployeeId: string } }
+  { params }: { params: { employeeId: string } }
 ) {
   try {
     const { userId } = auth();

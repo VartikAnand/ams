@@ -11,18 +11,14 @@ import { Button, Input, Textarea } from "@nextui-org/react";
 
 interface phoneNumberFormProps {
   initialData: {
-    khasraNumber: string;
-    farmerDetails: {
-      id: string;
-      fName: string;
-      lName: string;
+    EmployeeDetails: {
+      phoneNumber: string;
     };
   };
-  farmerId: {
-    farmerId: string;
+  empId: {
+    empId: string;
   };
 }
-
 const formSchema = z.object({
   phoneNumber: z
     .string()
@@ -35,7 +31,7 @@ const formSchema = z.object({
 });
 
 export const PhoneNumberForm = ({
-  farmerId,
+  empId,
   initialData,
 }: phoneNumberFormProps) => {
   const router = useRouter();
@@ -50,13 +46,13 @@ export const PhoneNumberForm = ({
 
   const { isSubmitting, isValid } = form.formState;
 
-  const [isFarmerDetails, setIsFarmerDetails] = useState(
-    initialData.farmerDetails || null
+  const [isEmployeeDetails, setIsEmployeeDetails] = useState(
+    initialData.employeeDetails || null
   );
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       await axios.patch(
-        `/api/farmers/${farmerId}/farmerDetails/${initialData.farmerDetails.id}`,
+        `/api/salary/${initialData.empId}/employeeDetails/${initialData?.employeeDetails.empDetailId}`,
         {
           phoneNumber: values.phoneNumber,
         }
@@ -101,8 +97,8 @@ export const PhoneNumberForm = ({
       </div>
       {!isEditing && (
         <p className="text-sm mt-2">
-          {initialData?.farmerDetails?.phoneNumber ? (
-            <>{initialData?.farmerDetails?.phoneNumber}</>
+          {initialData?.employeeDetails?.phoneNumber ? (
+            <>{initialData?.employeeDetails?.phoneNumber}</>
           ) : (
             "Contact Number not available"
           )}
@@ -121,7 +117,7 @@ export const PhoneNumberForm = ({
                   size="sm"
                   isRequired
                   variant="flat"
-                  defaultValue={initialData?.farmerDetails.phoneNumber || ""}
+                  defaultValue={initialData?.employeeDetails.phoneNumber || ""}
                   color={formState.errors.phoneNumber ? "danger" : "primary"}
                   isInvalid={!!formState.errors.phoneNumber}
                   errorMessage={formState.errors.pinCode?.phoneNumber}
@@ -130,7 +126,7 @@ export const PhoneNumberForm = ({
             </div>
           </div>
           <Button type="submit" color="primary" variant="flat" className="mt-4">
-            {!isFarmerDetails.phoneNumber ? "Add" : "Save"}
+            {!isEmployeeDetails.phoneNumber ? "Add" : "Save"}
           </Button>
         </form>
       )}

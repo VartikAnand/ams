@@ -39,21 +39,21 @@ const EmpId = async ({ params }: { params: { empId: string } }) => {
     employee.joiningDate,
     employee.payrollType,
 
-    employee.employeeDetails?.id,
-    employee.employeeDetails?.fName,
-    employee.employeeDetails?.lName,
+    employee.employeeDetails?.firstName,
+    employee.employeeDetails?.lastName,
     employee.employeeDetails?.address,
     employee.employeeDetails?.city,
     employee.employeeDetails?.state,
     employee.employeeDetails?.pinCode,
     employee.employeeDetails?.phoneNumber,
-    employee.employeeDetails?.aadharNumber,
+    employee.employeeDetails?.aadhazrNumber,
   ];
 
   const totalFields = requiredFields.length;
   const completedFields = requiredFields.filter(Boolean).length;
 
   const completionText = `${completedFields}/${totalFields}`;
+  const [completedCount, totalCount] = completionText.split("/").map(Number);
   return (
     <div className="p-6">
       {/* LCustomize Employee Salary */}
@@ -65,11 +65,23 @@ const EmpId = async ({ params }: { params: { empId: string } }) => {
           </span>
         </div>
         <div className="flex flex-row gap-y-2 gap-2">
-          <Button variant="ghost" color="primary" aria-label="save">
-            Save
-          </Button>
-          {/* DELETE FARMER  */}
-          <Delete farmerId={employee.id} />
+          {completedCount === totalCount ? (
+            <Button variant="ghost" color="primary" aria-label="save">
+              Save
+            </Button>
+          ) : (
+            <Button
+              isDisabled
+              variant="flat"
+              color="primary"
+              aria-label="cancel"
+            >
+              Save
+            </Button>
+          )}
+
+          {/* DELETE Employee  */}
+          <Delete empId={employee.empId} />
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16">

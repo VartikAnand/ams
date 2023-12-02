@@ -4,6 +4,8 @@ import { Divider, Button } from "@nextui-org/react";
 import { AlertTriangle, StickyNote } from "lucide-react";
 import { CreateEmpDetailForm } from "./(employeeDetails)/createEmpDetailForm";
 import { AddressForm } from "./(employeeDetails)/addressForm";
+import { PhoneNumberForm } from "./(employeeDetails)/phoneNumberForm";
+import { AadhaarNumberForm } from "./(employeeDetails)/aadhaarNumberForm";
 
 interface EmployeeDetailsPageFormProps {
   initialData: string;
@@ -39,28 +41,15 @@ export const EmployeeDetailsPage = ({
         <div>
           <AddressForm empId={initialData.empId} initialData={initialData} />
           {/* phoneNumber fORM */}
-          {/* <PhoneNumberForm
-            farmerId={initialData.id}
+          <PhoneNumberForm
+            empId={initialData.empId}
             initialData={initialData}
-          /> */}
+          />
           {/* Aadhaar Number Form */}
-          {/* <AadhaarNumberForm
-            farmerId={initialData.id}
+          <AadhaarNumberForm
+            empId={initialData.empId}
             initialData={initialData}
-          /> */}
-          {/* /other notes section */}
-
-          <div className="flex items-center gap-x-2 my-3">
-            <Button
-              isIconOnly
-              color="primary"
-              variant="flat"
-              aria-label="notes"
-            >
-              <StickyNote className="text-primary" />
-            </Button>
-            <h2 className="text-xl">Other Notes</h2>
-          </div>
+          />
         </div>
       )}
     </div>

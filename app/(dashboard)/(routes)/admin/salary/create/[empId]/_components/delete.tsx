@@ -15,32 +15,31 @@ import { toast } from "sonner";
 import axios from "axios";
 
 interface DeleteProps {
-  farmerId: string;
+  empId: string;
 }
 
-export const Delete = ({ farmerId }: DeleteProps) => {
+export const Delete = ({ empId }: DeleteProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
   const handleOpen = () => {
     onOpen();
   };
-
-  const handleDelete = async (farmerId: string) => {
+  const handleDelete = async (empId: string) => {
     try {
-      await axios.delete(`/api/farmers/${farmerId}`);
-      await toast.promise(
-        async () => {
-          await new Promise((resolve) => setTimeout(resolve, 1000));
-          return { name: "Land & Farmer Detail's", status: "success" };
-        },
-        {
-          loading: "Deleting Complete Data...",
-          success: (data) => `${data.name} Deleted Successfully`,
-          error: "Error in  Deleting ",
-        }
-      );
+      `/api/salary/${empId}`,
+        await toast.promise(
+          async () => {
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+            return { name: "Land & Farmer Detail's", status: "success" };
+          },
+          {
+            loading: "Deleting Complete Data...",
+            success: (data) => `${data.name} Deleted Successfully`,
+            error: "Error in  Deleting ",
+          }
+        );
 
-      router.push("/admin/farmerEntry");
+      router.push("/admin/salary");
       router.refresh();
     } catch (error) {
       console.error("Error:", error);
@@ -87,7 +86,7 @@ export const Delete = ({ farmerId }: DeleteProps) => {
                 <Button color="primary" variant="light" onPress={onClose}>
                   Close
                 </Button>
-                <Button color="danger" onClick={() => handleDelete(farmerId)}>
+                <Button color="danger" onClick={() => handleDelete(empId)}>
                   Delete
                 </Button>
               </ModalFooter>
