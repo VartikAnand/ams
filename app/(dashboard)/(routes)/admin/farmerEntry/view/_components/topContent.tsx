@@ -63,7 +63,7 @@ export const TopContent = ({ initialData, farmerData }) => {
             <h6 className="text-sm font-medium text-primary-500 ">Remaining</h6>
             <div className="flex  text-default-500 text-2xl items-center justify-center gap-1 font-semibold ">
               <span className="text-default-500 text-3xl">&#8377;</span>
-              {leftAmount}
+              {formatArea(leftAmount)}
             </div>
           </div>
         </div>
@@ -82,8 +82,8 @@ export const TopContent = ({ initialData, farmerData }) => {
               Total Area
             </h6>
             <div className="flex text-default-500  text-2xl items-center justify-center gap-1 font-semibold ">
-              <span className="text-default-500 text-3xl">&#8377;</span>
               {formatArea(farmerData.totalArea)}
+              <span className="text-default-500 text-3xl">&#x33A1;</span>
             </div>
           </div>
         </div>
