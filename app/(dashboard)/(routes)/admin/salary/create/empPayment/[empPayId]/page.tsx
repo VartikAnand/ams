@@ -1,5 +1,6 @@
 import React from "react";
 import { db } from "/lib/db";
+import { CreateSalary } from "./_components/createSalary";
 
 const EmpSal = async ({ params }: { params: { empPayId: string } }) => {
   const salaryData = await db.empSalary.findUnique({
@@ -9,12 +10,11 @@ const EmpSal = async ({ params }: { params: { empPayId: string } }) => {
   });
   console.log(salaryData);
   return (
-    <div>Emp sal</div>
-    // <Create
-    //   farmerId={farmer?.farmerPayId}
-    //   payId={farmer?.payId}
-    //   initialData={farmer}
-    // />
+    <CreateSalary
+      empId={salaryData?.employeeId}
+      salId={salaryData?.salId}
+      initialData={salaryData}
+    />
   );
 };
 
