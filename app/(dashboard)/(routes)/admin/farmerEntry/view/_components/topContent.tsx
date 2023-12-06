@@ -29,7 +29,7 @@ export const TopContent = ({ initialData, farmerData }) => {
     <div className="hidden  md:flex lg:flex w-full gap-2 justify-between">
       <Card
         isBlurred
-        className="border-none flex flex-row justify-between items-center gap-2 px-4 pr-6 lg:px-10 bg-primary-600 dark:bg-primary-700/10   h-28 w-full "
+        className="border-none flex flex-row justify-between items-center gap-2 px-4 pr-6 lg:px-10 bg-primary-600/10 dark:bg-primary-700/10   h-28 w-full "
         shadow="sm"
       >
         {/* Total Paid Card */}
