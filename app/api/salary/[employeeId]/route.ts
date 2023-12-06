@@ -23,7 +23,6 @@ export async function PATCH(
     });
     return NextResponse.json(employee);
   } catch (err) {
-    console.log("[EMP UPDATE : ]", err);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

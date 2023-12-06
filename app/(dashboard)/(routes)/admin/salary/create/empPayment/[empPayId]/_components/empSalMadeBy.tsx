@@ -48,7 +48,6 @@ export const EmpSalMadeBy = ({
   const [value, setValue] = React.useState<Selection>(new Set([]));
   const [isEditing, setIsEditing] = useState(false);
   const toggleEdit = () => setIsEditing((current) => !current);
-  console.log(userData);
   const handleOpen = () => {
     onOpen();
   };

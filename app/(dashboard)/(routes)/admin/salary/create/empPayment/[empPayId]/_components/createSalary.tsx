@@ -56,7 +56,6 @@ export const CreateSalary = async ({
   const completedFields = requiredFields.filter(Boolean).length;
   const completionText = `${completedFields}/${totalFields}`;
 
-  console.log(completionText);
   return (
     <div className="p-6">
       <div className="flex items-center justify-between">

@@ -41,8 +41,6 @@ export const Cash = ({ farmerId, payId, initialData }: CreateCashProps) => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      console.log(values);
-
       await axios.patch(
         `/api/salary/${farmerId}/employeePayment/${initialData.salId}`,
         {

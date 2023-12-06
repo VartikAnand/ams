@@ -11,7 +11,6 @@ interface userDataProps {
 
 export const Add = ({ userData }: userDataProps) => {
   const router = useRouter();
-  console.log(userData);
   const handlePaymentButtonClick = async () => {
     try {
       const response = await axios.post(

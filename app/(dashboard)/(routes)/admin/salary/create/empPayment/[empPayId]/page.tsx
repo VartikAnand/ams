@@ -19,7 +19,6 @@ const EmpSal = async ({ params }: { params: { empPayId: string } }) => {
       empId: salaryData.employeeId,
     },
   });
-  console.log(employee);
   return (
     <CreateSalary
       empId={salaryData?.employeeId}

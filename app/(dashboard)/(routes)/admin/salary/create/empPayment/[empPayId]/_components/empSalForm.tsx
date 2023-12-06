@@ -45,7 +45,6 @@ export const EmpSalForm = ({ initialData, empId, salId }: SalaryFormProps) => {
 
       const parseNetSalary = Salary + Bonus - Deduction;
 
-      console.log(parseNetSalary);
       await axios.patch(`/api/salary/${empId}/employeePayment/${salId}`, {
         salary: parseSalary,
         netSalary: parseNetSalary,
