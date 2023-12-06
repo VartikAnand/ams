@@ -50,7 +50,7 @@ export const Save = ({
           error: "Error in  Adding Land Details",
         }
       );
-      router.push(`/admin/salary/view/${salId}`);
+      router.push(`/admin/salary/view/${empId}`);
     } catch {
       toast.error("Try Again! Something went wrong");
     }
