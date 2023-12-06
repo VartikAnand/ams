@@ -8,12 +8,24 @@ const EmpSal = async ({ params }: { params: { empPayId: string } }) => {
       salId: params.empPayId,
     },
   });
-  console.log(salaryData);
+  const user = await db.user.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  const employee = await db.employee.findUnique({
+    where: {
+      empId: salaryData.employeeId,
+    },
+  });
+  console.log(employee);
   return (
     <CreateSalary
       empId={salaryData?.employeeId}
       salId={salaryData?.salId}
       initialData={salaryData}
+      userData={user}
     />
   );
 };

@@ -170,6 +170,7 @@ model empSalary {
   employeeId      String
   employees       Employee  @relation(fields: [employeeId], references: [empId], onDelete: Cascade)
   userUuid        String?
+  paymentGivenBy  String?   @db.Text
   isPaymentAdded  Boolean   @default(false)
   paymentType     String?   @db.Text
   paymentMode     String?   @db.Text

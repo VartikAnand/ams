@@ -8,7 +8,7 @@ const statusOptions = [
 const columns = [
   { name: "Amount", uid: "amount", sortable: true },
   { name: "Type", uid: "paymentType", sortable: true },
-  { name: "From", uid: "ForToName", sortable: true },
+  { name: "For", uid: "ForToName", sortable: true },
 
   { name: "Table", uid: "paymentFromTo", sortable: true },
   { name: "Name", uid: "paymentTo", sortable: true },
