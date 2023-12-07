@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   Popover,
   PopoverTrigger,
@@ -11,18 +11,67 @@ import {
 } from "@nextui-org/react";
 import { BellDot, Clock } from "lucide-react";
 import { db } from "@/lib/db";
+import { toast } from "sonner";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 interface NotificationPageProps {
   notificationData: NotificationData[];
 }
 export default function PopoverBox({ data }: NotificationPageProps) {
-  const [notifications, setNotifications] = useState([]);
+  const router = useRouter();
+
+  const onSubmit = async (notification) => {
+    try {
+      const currentDate = new Date();
+
+      await axios.patch(`/api/notification/${notification.notiId}`, {
+        readTime: currentDate,
+        isRead: true,
+      });
+      toast.success("Marked as Read");
+      router.refresh();
+    } catch (error) {
+      toast.error("Unable to marked as read");
+    }
+  };
 
   // console.log(data);
   const currentDate = new Date();
+
   const filteredNotifications = data.filter((notification) => {
-    return notification.createdAt <= currentDate;
+    const notificationDate = new Date(notification.notiDate);
+    const isToday =
+      notificationDate.toDateString() === currentDate.toDateString();
+    const isTodayOrPast = notificationDate <= currentDate;
+
+    return (
+      (!notification.isRead && isTodayOrPast) ||
+      (notification.isRead && isToday)
+    );
   });
+
+  const sortedReadNotifications = filteredNotifications
+    .filter((notification) => notification.isRead)
+    .sort((a, b) => {
+      const dateA = new Date(a.createdAt);
+      const dateB = new Date(b.createdAt);
+      return dateA - dateB; // Sorts read notifications by date in descending order
+    })
+    .reverse();
+
+  const sortedUnreadNotifications = filteredNotifications
+    .filter((notification) => !notification.isRead)
+    .sort((a, b) => {
+      const dateA = new Date(a.createdAt);
+      const dateB = new Date(b.createdAt);
+      return dateB - dateA; // Sorts unread notifications by date in descending order
+    });
+
+  const finalSortedNotifications = [
+    ...sortedReadNotifications,
+    ...sortedUnreadNotifications,
+  ];
 
   const unreadNotifications = filteredNotifications.filter(
     (notification) => !notification.isRead
@@ -64,6 +113,7 @@ export default function PopoverBox({ data }: NotificationPageProps) {
               <>
                 <div key={notification.notiId}>
                   <Button
+                    onClick={() => onSubmit(notification)}
                     color="primary"
                     isDisabled={notification.isRead}
                     variant="flat"
@@ -100,18 +150,14 @@ export default function PopoverBox({ data }: NotificationPageProps) {
             ))}
             {filteredNotifications.length === 0 && (
               <>
-                <div className="mt-2  flex  flex-col">
-                  <h2 className="font-medium text-xl text-primary ">
-                    Notification&apos;s
-                  </h2>
-                  <p className="text-default-400/70 text-xs">
-                    Check out your latest notifications
-                  </p>
-                  <Divider className="my-1 mt-2 " />
-                </div>
                 <div className="flex flex-col items-center justify-center align-middle gap-2 w-72  h-96">
-                  <Clock className="w-1/2 h-1/2" />
-                  <p>No Notification</p>
+                  <Clock className="w-1/2 h-1/2 text-primary/60" />
+                  <p
+                    className="text-center pl-1
+                  font-base"
+                  >
+                    No Notification
+                  </p>
                 </div>
               </>
             )}

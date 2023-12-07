@@ -77,7 +77,7 @@ model FarmerPayment {
 
 model User {
   uuid          String        @id @default(uuid())
-  userId        String?
+  userId        String        @unique
   userName      String?       @db.Text
   firstName     String?       @db.Text
   lastName      String?       @db.Text

@@ -154,7 +154,7 @@ export const UserTable = ({ initialData, userData }: UserTableProps) => {
         );
       // phoneNumber
       case "phoneNumber":
-        return <p>{user?.phoneNumber.substring(2)}</p>;
+        return <p>{user?.phoneNumber?.substring(2)}</p>;
       // email
       case "email":
         return <p>{user?.email}</p>;
