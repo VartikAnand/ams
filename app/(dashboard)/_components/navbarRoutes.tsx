@@ -7,9 +7,9 @@ import { useUser } from "@clerk/nextjs";
 import { BellDot, LogOut } from "lucide-react";
 import { Button } from "@nextui-org/react";
 import { ThemeSwitcher } from "/components/ThemeSwitch/ThemeSwitcher";
-import Notification from "./(notification)/notification";
+import PopoverBox from "./(notification)/notification";
 
-const NavbarRoutes = () => {
+const NavbarRoutes = ({ Notidata }) => {
   const { userId } = useAuth();
   const pathname = usePathname();
   const user = useUser();
@@ -19,11 +19,9 @@ const NavbarRoutes = () => {
   const isSearchPage = pathname === "/search";
   return (
     <div className="flex gap-x-2 ml-auto">
+      <PopoverBox data={Notidata} />
       <div className="hidden sm:block">
         <ThemeSwitcher />
-      </div>
-      <div>
-        <Notification />
       </div>
 
       {isAdminPage || isDataInputPage ? (

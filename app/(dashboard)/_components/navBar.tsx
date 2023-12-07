@@ -3,8 +3,10 @@ import React from "react";
 import NavbarRoutes from "./navbarRoutes";
 import MobileSidebar from "./mobileSidebar";
 import { useTheme } from "next-themes";
-
-const NavBar = () => {
+interface dataProps {
+  Notidata: string;
+}
+const NavBar = ({ Notidata }: dataProps) => {
   const { theme } = useTheme();
 
   return (
@@ -15,7 +17,7 @@ const NavBar = () => {
     >
       {/* Mobile Drawer */}
       <MobileSidebar />
-      <NavbarRoutes />
+      <NavbarRoutes Notidata={Notidata} />
     </div>
   );
 };

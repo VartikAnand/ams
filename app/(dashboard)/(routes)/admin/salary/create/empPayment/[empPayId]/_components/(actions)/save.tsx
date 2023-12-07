@@ -21,26 +21,29 @@ export const Save = ({
 
   const handleSave = async () => {
     try {
-      const forToName = `${employeeData.department}`;
-      const payToName = `${employeeData.employeeDetails.firstName} ${employeeData.employeeDetails.lastName}`;
-      const response = await axios.post(`/api/user/${initialData.userUuid}`, {
-        isPaymentTypeDebit: true,
-        paymentFor: "Employee Salary",
-        debitAmount: initialData.netSalary,
-        paymentFrom: initialData.paymentGivenBy,
-
-        ForToName: forToName,
-        payId: salId,
-        paymentTo: payToName,
-        isPaymentAdded: true,
-        paymentType: "Debit",
-        paymentMode: initialData.paymentMode,
-        paymentModeId: initialData.paymentModeId,
-        paymentModeInfo: initialData.paymentModeInfo,
-      });
-
       await toast.promise(
         async () => {
+          const forToName = `${employeeData.department}`;
+          const payToName = `${employeeData.employeeDetails.firstName} ${employeeData.employeeDetails.lastName}`;
+          const response = await axios.post(
+            `/api/user/${initialData.userUuid}`,
+            {
+              isPaymentTypeDebit: true,
+              paymentFor: "Employee Salary",
+              debitAmount: initialData.netSalary,
+              paymentFrom: initialData.paymentGivenBy,
+
+              ForToName: forToName,
+              payId: salId,
+              paymentTo: payToName,
+              isPaymentAdded: true,
+              paymentType: "Debit",
+              paymentMode: initialData.paymentMode,
+              paymentModeId: initialData.paymentModeId,
+              paymentModeInfo: initialData.paymentModeInfo,
+            }
+          );
+
           const currentDate = new Date();
           let upcomingDate = new Date();
 
@@ -62,9 +65,9 @@ export const Save = ({
             const notification = await axios.post(`/api/notification`, {
               isSent: true,
               notiDate: upcomingDate,
-              notiTitle: "Title",
-              notiDesc: "Description",
-              payId: response.payId,
+              notiTitle: "Employee Salary",
+              notiDesc: `Reminder: Salary disbursements for [ ${forToName}] to [${payToName}] are due.`,
+              payId: salId,
             });
             router.push(`/admin/salary/view/${empId}`);
 

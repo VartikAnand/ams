@@ -7,57 +7,113 @@ import {
   Button,
   Input,
   Badge,
+  Divider,
 } from "@nextui-org/react";
-import { BellDot } from "lucide-react";
+import { BellDot, Clock } from "lucide-react";
+import { db } from "@/lib/db";
 
-export default function Notification() {
+interface NotificationPageProps {
+  notificationData: NotificationData[];
+}
+export default function PopoverBox({ data }: NotificationPageProps) {
   const [notifications, setNotifications] = useState([]);
 
-  // Simulating fetching notifications from an API
-  useEffect(() => {
-    // Replace this with your actual API call to fetch notifications
-    // For demonstration purposes, using dummy data
-    const fetchNotifications = async () => {
-      try {
-        // Simulated API call
-        // const response = await fetch("/api/notifications");
-        // const data = await response.json();
-        // setNotifications(data.notifications);
-      } catch (error) {
-        console.error("Error fetching notifications:", error);
-      }
-    };
+  // console.log(data);
+  const currentDate = new Date();
+  const filteredNotifications = data.filter((notification) => {
+    return notification.createdAt <= currentDate;
+  });
 
-    // Fetch notifications when the component mounts
-    fetchNotifications();
-  }, []);
+  const unreadNotifications = filteredNotifications.filter(
+    (notification) => !notification.isRead
+  );
 
   return (
     <div className="flex flex-wrap gap-4">
       <Popover
-        radius="md"
-        showArrow
+        radius="lg"
+        // showArrow
         offset={10}
         placement="bottom"
         backdrop="transparent"
-        triggerType="listbox"
+        triggerType="tree"
       >
         <PopoverTrigger>
           <div className="cursor-pointer p-1">
-            <Badge content="10" shape="circle" color="danger">
-              <BellDot className="h-6 w-6 text-primary " />
+            <Badge
+              content={`${unreadNotifications.length}`}
+              shape="circle"
+              color="danger"
+            >
+              <BellDot className="h-6 w-6 text-primary" />
             </Badge>
           </div>
         </PopoverTrigger>
         <PopoverContent>
-          <div className="flex flex-col gap-2 w-64">
-            {notifications.map((notification, index) => (
-              <p key={index}>{notification.message}</p>
-              // Render your notification data here
-              // You might display notification message, employee name, amount, etc.
+          <div className="flex flex-col gap-2 w-80  pb-4 h-96 overflow-y-auto overflow-hidden">
+            <div className="mt-2  flex  flex-col">
+              <h2 className="font-medium text-xl text-primary ">
+                Notification&apos;s
+              </h2>
+              <p className="text-xs text-primary/60 font-light">
+                Check out your latest notifications
+              </p>
+              <Divider className="my-1 mt-2 " />
+            </div>
+            {filteredNotifications.map((notification, index) => (
+              <>
+                <div key={notification.notiId}>
+                  <Button
+                    color="primary"
+                    isDisabled={notification.isRead}
+                    variant="flat"
+                    className="flex h-full  cursor-pointer w-full m-0 py-2 align-middle gap-2 px-2 overflow-y-auto overflow-hidden"
+                  >
+                    <div className="w-full text-start">
+                      <p class="text-sm font-medium">
+                        {notification?.notiTitle}
+                      </p>
+                      <p
+                        className="font-light text-xs overflow-auto"
+                        style={{ whiteSpace: "pre-wrap" }}
+                      >
+                        {notification?.notiDesc}
+                      </p>
+                      <span className="flex items-center gap-1 justify-end">
+                        <Clock className="w-3 h-3" />
+                        <p class="text-xs font-light text-end over">
+                          {notification?.notiDate
+                            ? new Date(
+                                notification.notiDate
+                              ).toLocaleDateString("en-GB", {
+                                day: "2-digit",
+                                month: "2-digit",
+                                year: "numeric",
+                              })
+                            : "DD-MM-YYYY"}
+                        </p>
+                      </span>
+                    </div>
+                  </Button>
+                </div>
+              </>
             ))}
-            {notifications.length === 0 && (
-              <div className="w-32 h-56 ">No notifications</div>
+            {filteredNotifications.length === 0 && (
+              <>
+                <div className="mt-2  flex  flex-col">
+                  <h2 className="font-medium text-xl text-primary ">
+                    Notification&apos;s
+                  </h2>
+                  <p className="text-default-400/70 text-xs">
+                    Check out your latest notifications
+                  </p>
+                  <Divider className="my-1 mt-2 " />
+                </div>
+                <div className="flex flex-col items-center justify-center align-middle gap-2 w-72  h-96">
+                  <Clock className="w-1/2 h-1/2" />
+                  <p>No Notification</p>
+                </div>
+              </>
             )}
           </div>
         </PopoverContent>
