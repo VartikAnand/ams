@@ -27,7 +27,7 @@ export const DeleteFarmer = ({ farmerId }: DeleteFarmerProps) => {
 
   const handleDelete = async (farmerId: string) => {
     try {
-      // await axios.delete(`/api/farmers/${farmerId}`);
+      await axios.delete(`/api/farmers/${farmerId}`);
       await toast.promise(
         async () => {
           await new Promise((resolve) => setTimeout(resolve, 1000));

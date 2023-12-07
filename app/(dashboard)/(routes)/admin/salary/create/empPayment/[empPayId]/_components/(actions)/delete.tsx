@@ -27,7 +27,7 @@ export const Delete = ({ salId, empId }: DeleteProps) => {
   };
   const handleDelete = async (salId: string) => {
     try {
-      `/api/salary/${empId}/employeePayment/${salId}`;
+      await axios.delete(`/api/salary/${empId}/employeePayment/${salId}`);
       await toast.promise(
         async () => {
           await new Promise((resolve) => setTimeout(resolve, 1000));
