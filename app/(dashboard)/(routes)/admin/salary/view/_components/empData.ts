@@ -1,8 +1,8 @@
 import React from "react";
 
 const statusOptions = [
-  { name: "Pending", uid: false },
-  { name: "Given", uid: true },
+  { name: "Paid", uid: false },
+  { name: "pending", uid: true },
 ];
 
 const columns = [

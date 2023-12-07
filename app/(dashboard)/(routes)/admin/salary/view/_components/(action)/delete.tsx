@@ -15,20 +15,20 @@ import { toast } from "sonner";
 import axios from "axios";
 
 interface DeletePaymentProps {
-  farmerPaymentId: string;
+  empData: string;
 }
 
-export const Delete = ({ farmerPaymentId }: DeletePaymentProps) => {
+export const Delete = ({ empData }: DeletePaymentProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
   const handleOpen = () => {
     onOpen();
   };
 
-  const handleDelete = async (farmerPaymentId: string) => {
+  const handleDelete = async (empData: string) => {
     try {
       await axios.delete(
-        `/api/farmers/${farmerPaymentId.farmerPayId}/farmerPayment/${farmerPaymentId.payId}`
+        `/api/salary/${empData.employeeId}/employeePayment/${empData.salId}`
       );
       await toast.promise(
         async () => {
@@ -91,10 +91,7 @@ export const Delete = ({ farmerPaymentId }: DeletePaymentProps) => {
                 <Button color="primary" variant="light" onPress={onClose}>
                   Close
                 </Button>
-                <Button
-                  color="danger"
-                  onClick={() => handleDelete(farmerPaymentId)}
-                >
+                <Button color="danger" onClick={() => handleDelete(empData)}>
                   Delete
                 </Button>
               </ModalFooter>

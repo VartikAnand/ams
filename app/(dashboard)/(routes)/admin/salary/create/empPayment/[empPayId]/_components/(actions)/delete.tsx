@@ -27,24 +27,27 @@ export const Delete = ({ salId, empId }: DeleteProps) => {
   };
   const handleDelete = async (salId: string) => {
     try {
-      await axios.delete(`/api/salary/${empId}/employeePayment/${salId}`);
       await toast.promise(
         async () => {
-          await new Promise((resolve) => setTimeout(resolve, 1000));
-          return { name: "Land & Farmer Detail's", status: "success" };
+          try {
+            await axios.delete(`/api/salary/${empId}/employeePayment/${salId}`);
+            return { name: "Employee Salary", status: "success" };
+          } catch (error) {
+            throw new Error("Error in Deleting");
+          }
         },
         {
           loading: "Deleting Complete Data...",
           success: (data) => `${data.name} Deleted Successfully`,
-          error: "Error in  Deleting ",
+          error: (error) => `${error}`,
         }
       );
-
-      router.push("/admin/salary");
       router.refresh();
+
+      router.push(`/admin/salary/view/${empId}`);
     } catch (error) {
       console.error("Error:", error);
-      toast.error("Something went wrong");
+      toast.error("Try Again !!! Something went wrong");
     }
   };
 

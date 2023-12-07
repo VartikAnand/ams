@@ -13,21 +13,29 @@ export const Add = ({ userData }: userDataProps) => {
   const router = useRouter();
   const handlePaymentButtonClick = async () => {
     try {
-      const response = await axios.post(
-        `/api/salary/${userData.empId}/employeePayment`,
-        {
-          empId: userData.empId,
-          salary: userData.baseSalary,
-        }
-      );
+      const promise = async () => {
+        // Use await inside the promise to ensure the response is available
+        const response = await axios.post(
+          `/api/salary/${userData.empId}/employeePayment`,
+          {
+            empId: userData.empId,
+            salary: userData.baseSalary,
+          }
+        );
+        return response; // resolve the promise with the response object
+      };
 
-      const promise = () => new Promise((resolve) => setTimeout(resolve, 1000));
       toast.promise(promise, {
         loading: "Loading...",
-        success: "Adding Farmer Payment ",
-        error: "Error",
+        success: (response) => {
+          router.push(`/admin/salary/create/empPayment/${response.data.salId}`); // navigate after successful response
+          return "Add employee payment";
+        },
+        error: (error) => {
+          console.error("Error:", error);
+          return "Error adding employee payment";
+        },
       });
-      router.push(`/admin/salary/create/empPayment/${response.data.salId}`);
     } catch (error) {
       console.error("Error:", error);
       toast.error("Try Again !! Something went wrong");

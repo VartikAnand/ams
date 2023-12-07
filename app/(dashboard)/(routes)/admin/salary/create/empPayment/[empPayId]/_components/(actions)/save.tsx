@@ -41,16 +41,44 @@ export const Save = ({
 
       await toast.promise(
         async () => {
-          await new Promise((resolve) => setTimeout(resolve, 1000));
-          return { name: "Land Detail's", status: "success" };
+          const currentDate = new Date();
+          let upcomingDate = new Date();
+
+          switch (employeeData.payrollType) {
+            case "1 Week":
+              upcomingDate.setDate(currentDate.getDate() + 7); // Add 7 days
+              break;
+            case "1 Month":
+              upcomingDate.setMonth(currentDate.getMonth() + 1); // Add 1 month
+              break;
+            case "1 Year":
+              upcomingDate.setFullYear(currentDate.getFullYear() + 1); // Add 1 year
+              break;
+            default:
+              // Handle other cases if needed
+              break;
+          }
+          try {
+            const notification = await axios.post(`/api/notification`, {
+              isSent: true,
+              notiDate: upcomingDate,
+              notiTitle: "Title",
+              notiDesc: "Description",
+              payId: response.payId,
+            });
+            router.push(`/admin/salary/view/${empId}`);
+
+            return { name: "Employee salary", status: "success" };
+          } catch (error) {
+            throw new Error("Error in adding employee salary");
+          }
         },
         {
-          loading: "Adding Land Detail ......",
-          success: (data) => `${data.name} Added Fill Farmer Detail's`,
-          error: "Error in  Adding Land Details",
+          loading: "Adding employee salary...",
+          success: (data) => `${data.name} added successfully`,
+          error: "Error in adding employee salary",
         }
       );
-      router.push(`/admin/salary/view/${empId}`);
     } catch {
       toast.error("Try Again! Something went wrong");
     }

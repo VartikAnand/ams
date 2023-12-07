@@ -189,11 +189,11 @@ export const EmpPaymentTable = ({ farmerId, initialData, farmerData }) => {
         return (
           <Chip
             className="capitalize px-2 py-1"
-            color={statusColorMap[user.isPaymentAdded]}
+            color={statusColorMap[user.netSalary]}
             size="sm"
             variant="bordered"
           >
-            {user.isPaymentAdded ? "Given" : "pending"}
+            {user.netSalary ? "Given" : "pending"}
           </Chip>
         );
       // TOtal Area
@@ -221,7 +221,7 @@ export const EmpPaymentTable = ({ farmerId, initialData, farmerData }) => {
       case "actions":
         return (
           <div className=" flex justify-start items-center gap-2 pl-4">
-            <Delete farmerPaymentId={user} />
+            <Delete empData={user} />
           </div>
         );
       default:
@@ -307,7 +307,7 @@ export const EmpPaymentTable = ({ farmerId, initialData, farmerData }) => {
             <Add userData={farmerData} />
           </div>
         </div>
-        {/* <TopContent initialData={initialData} farmerData={farmerData} /> */}
+        <TopContent initialData={initialData} farmerData={farmerData} />
 
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small mx-2">

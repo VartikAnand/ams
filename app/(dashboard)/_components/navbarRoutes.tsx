@@ -7,6 +7,7 @@ import { useUser } from "@clerk/nextjs";
 import { BellDot, LogOut } from "lucide-react";
 import { Button } from "@nextui-org/react";
 import { ThemeSwitcher } from "/components/ThemeSwitch/ThemeSwitcher";
+import Notification from "./(notification)/notification";
 
 const NavbarRoutes = () => {
   const { userId } = useAuth();
@@ -21,12 +22,10 @@ const NavbarRoutes = () => {
       <div className="hidden sm:block">
         <ThemeSwitcher />
       </div>
+      <div>
+        <Notification />
+      </div>
 
-      <Link href="/notification">
-        <Button color="primary" isIconOnly variant="flat" size="sm">
-          <BellDot className="h-5" />
-        </Button>
-      </Link>
       {isAdminPage || isDataInputPage ? (
         <Link href="/dashboard">
           <Button color="primary" variant="ghost" size="sm">

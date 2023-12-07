@@ -7,7 +7,14 @@ import {
   Chip,
   Divider,
 } from "@nextui-org/react";
-import { BadgeIndianRupee, CheckCircle, BadgeAlert, Badge } from "lucide-react";
+import {
+  BadgeIndianRupee,
+  CheckCircle,
+  BadgeAlert,
+  Badge,
+  Sparkles,
+  ShieldMinus,
+} from "lucide-react";
 
 export const TopContent = ({ initialData, farmerData }) => {
   function formatArea(number) {
@@ -20,11 +27,17 @@ export const TopContent = ({ initialData, farmerData }) => {
     }
   }
 
-  const totalPaidAmount = farmerData.farmerPayments
-    .filter((payment) => payment.paidAmount !== null)
-    .reduce((sum, payment) => sum + (payment.paidAmount || 0), 0);
-  const leftAmount = farmerData.totalLandCost - totalPaidAmount;
+  const totalPaidAmount = initialData
+    ?.filter((payment) => payment.netSalary !== null)
+    .reduce((sum, payment) => sum + (payment.netSalary || 0), 0);
 
+  const totalBonusAmount = initialData
+    ?.filter((payment) => payment.bonus !== null)
+    .reduce((sum, payment) => sum + (payment.bonus || 0), 0);
+
+  const totalDeductionAmount = initialData
+    ?.filter((payment) => payment.deduction !== null)
+    .reduce((sum, payment) => sum + (payment.deduction || 0), 0);
   return (
     <div className="hidden  md:flex lg:flex w-full gap-2 justify-between">
       <Card
@@ -41,11 +54,11 @@ export const TopContent = ({ initialData, farmerData }) => {
 
           <div className="flex flex-col gap-1">
             <h6 className="text-sm font-medium text-primary-500 ">
-              Total Paid
+              Net Salary
             </h6>
             <div className="flex text-2xl text-default-500  items-center justify-center gap-1 font-semibold ">
               <span className="text-default-500 text-3xl">&#8377;</span>
-              {formatArea(farmerData.totalLandCost)}
+              {formatArea(totalPaidAmount)}
             </div>
           </div>
         </div>
@@ -55,14 +68,14 @@ export const TopContent = ({ initialData, farmerData }) => {
 
         <div className="flex flex-row justify-center gap-2 ">
           <span className="flex gap-2 ">
-            <BadgeAlert className="text-primary-500 " />
+            <Sparkles className="text-primary-500 " />
           </span>
 
           <div className="flex flex-col gap-1">
-            <h6 className="text-sm font-medium text-primary-500 ">Remaining</h6>
+            <h6 className="text-sm font-medium text-primary-500 ">Bonus</h6>
             <div className="flex  text-default-500 text-2xl items-center justify-center gap-1 font-semibold ">
               <span className="text-default-500 text-3xl">&#8377;</span>
-              {formatArea(leftAmount)}
+              {formatArea(totalBonusAmount)}
             </div>
           </div>
         </div>
@@ -73,16 +86,15 @@ export const TopContent = ({ initialData, farmerData }) => {
 
         <div className="flex flex-row justify-center gap-2 ">
           <span className="flex gap-2 ">
-            <Badge className="text-primary-500 " />
+            <ShieldMinus className="text-primary-500 " />
           </span>
 
           <div className="flex flex-col gap-1">
-            <h6 className="text-sm font-medium text-primary-500 ">
-              Total Area
-            </h6>
+            <h6 className="text-sm font-medium text-primary-500 ">Deduction</h6>
             <div className="flex text-default-500  text-2xl items-center justify-center gap-1 font-semibold ">
-              {formatArea(farmerData.totalArea)}
-              <span className="text-default-500 text-3xl">&#x33A1;</span>
+              <span className="text-default-500 text-3xl">&#8377;</span>
+
+              {formatArea(totalDeductionAmount)}
             </div>
           </div>
         </div>

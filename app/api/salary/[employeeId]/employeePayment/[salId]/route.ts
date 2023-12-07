@@ -73,18 +73,22 @@ export async function DELETE(
           payId: salId,
         },
       });
-
-      const farmer = await db.employee.delete({
+      await db.notification.delete({
         where: {
-          empId: employeeId,
+          payId: salId,
+        },
+      });
+      const farmer = await db.empSalary.delete({
+        where: {
+          salId: salId,
         },
       });
 
       return NextResponse.json(farmer);
     } else {
-      const farmer = await db.employee.delete({
+      const farmer = await db.empSalary.delete({
         where: {
-          empId: employeeId,
+          salId: salId,
         },
       });
 

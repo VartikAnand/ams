@@ -12,7 +12,7 @@ import { BadgeIndianRupee, CheckCircle, BadgeAlert, Badge } from "lucide-react";
 export const TopContent = ({ initialData, farmerData }) => {
   function formatArea(number) {
     if (number >= 10000000) {
-      return (number / 10000000).toFixed(1).toLocaleString() + " C";
+      return (number / 10000000).toFixed(1).toLocaleString() + " Cr";
     } else if (number >= 100000) {
       return (number / 100000).toFixed(1).toLocaleString() + " L";
     } else {
@@ -81,7 +81,7 @@ export const TopContent = ({ initialData, farmerData }) => {
               Total Area
             </h6>
             <div className="flex text-default-500  text-2xl items-center justify-center gap-1 font-semibold ">
-              {formatArea(farmerData.totalArea)}
+              {farmerData.totalArea}
               <span className="text-default-500 text-3xl">&#x33A1;</span>
             </div>
           </div>
