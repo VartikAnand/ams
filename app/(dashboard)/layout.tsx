@@ -2,6 +2,9 @@ import Sidebar from "./_components/sidebar";
 import NavBar from "./_components/navBar";
 import { db } from "@/lib/db";
 const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
+  if (!db) {
+    return <h1>Check db connection</h1>;
+  }
   const Notification = await db.notification.findMany({
     orderBy: {
       createdAt: "desc",

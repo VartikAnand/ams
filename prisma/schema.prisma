@@ -23,6 +23,7 @@ model Farmer {
   farmerNotes     farmerOtherNotes[]
   farmerPayments  FarmerPayment[]
   attachments     Attachment[]
+  PlotSales       plotSale[]
 
   @@index([id])
 }
@@ -73,6 +74,54 @@ model FarmerPayment {
   paymentMode     String?  @db.Text
   paymentModeId   String?  @db.Text
   paymentModeInfo String?  @db.Text
+}
+
+model plotSale {
+  saleId             String @id @default(uuid())
+  salesInvoiceNumber Int    @unique @default(autoincrement())
+
+  plotNumber           Int?    @unique
+  plotPrice            Int?
+  customerName         String? @db.Text
+  custommerAddress     String? @db.Text
+  customerPinCode      Int?
+  customerState        String? @db.Text
+  customerCity         String? @db.Text
+  custommerPhoneNumber String? @db.Text
+  aadharNumber         String? @db.Text
+
+  customerIdProofUrl String?   @db.Text
+  saleDate           DateTime?
+  khasraNumber       Int?
+  farmerLand         Farmer    @relation(fields: [farmerLandId], references: [id], onDelete: Cascade)
+  farmerLandId       String
+
+  isLandLeft Boolean @default(false)
+
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  plotPayemnts plotPayemnt[]
+}
+
+model plotPayemnt {
+  payId            String    @id @default(uuid())
+  tottalAmount     Float?
+  paidAmount       Float?
+  leftAmount       Float?
+  particular       String?   @db.Text
+  notes            String?   @db.Text
+  notiDate         DateTime?
+  paymentRecivedBy String?   @db.Text
+  userUuid         String?
+  isPaymentAdded   Boolean   @default(false)
+  paymentType      String?   @db.Text
+  paymentMode      String?   @db.Text
+  paymentModeId    String?   @db.Text
+  paymentModeInfo  String?   @db.Text
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  plotPayId        String
+  plotPayment      plotSale  @relation(fields: [plotPayId], references: [saleId], onDelete: Cascade)
 }
 
 model User {

@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Trash2 } from "lucide-react";
+import { Trash } from "lucide-react";
 import {
   Modal,
   ModalContent,
@@ -14,36 +14,37 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import axios from "axios";
 
-interface DeleteAccountProps {
-  userAccountId: string;
+interface DeleteProps {
+  empId: string;
 }
 
-export const Delete = ({ userAccountId }: DeleteAccountProps) => {
+export const PlotDelete = ({ empId }: DeleteProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
   const handleOpen = () => {
     onOpen();
   };
-
-  const handleDelete = async (userAccountId: string) => {
+  const handleDelete = async (empId: string) => {
     try {
-      await axios.delete(`/api/user/${userAccountId}`);
+      console.log(empId);
       await toast.promise(
         async () => {
-          await new Promise((resolve) => setTimeout(resolve, 1000));
-          return { name: "Account", status: "success" };
+          try {
+            await axios.delete(`/api/plotSale/${empId}`);
+            return { name: "Plot Deleted", status: "success" };
+          } catch (error) {
+            toast.error("Something went wrong");
+            throw new Error("Error in Deleting");
+          }
+          router.push("/admin/plot");
         },
         {
-          loading: "Deleting Account % It's Data...",
-          success: (data) => `${data.name} Deleted Successfully`,
-          error: "Error in  Deleting ",
+          loading: "Deleting Complete Data...",
+          success: (data) => `Deleted Successfully`,
+          error: (error) => `${error}`,
         }
       );
-
-      router.refresh();
-      window.location.reload();
     } catch (error) {
-      console.error("Error:", error);
       toast.error("Something went wrong");
     }
   };
@@ -52,14 +53,12 @@ export const Delete = ({ userAccountId }: DeleteAccountProps) => {
     <div>
       <div className="flex flex-wrap gap-3">
         <Button
-          size="sm"
-          className="p-1"
           isIconOnly
           variant="flat"
           color="danger"
-          onPress={() => handleOpen()}
+          onClick={() => handleOpen()}
         >
-          <Trash2 />
+          <Trash />
         </Button>
       </div>
       <Modal
@@ -82,17 +81,14 @@ export const Delete = ({ userAccountId }: DeleteAccountProps) => {
               <ModalBody>
                 <p className="text-sm font-normal ">
                   This action cannot be undone. This will permanently delete
-                  your account and remove your data from our servers.
+                  your data and remove from our servers.
                 </p>
               </ModalBody>
               <ModalFooter>
-                <Button color="primary" variant="light" onPress={onClose}>
+                <Button color="primary" variant="light" onClick={onClose}>
                   Close
                 </Button>
-                <Button
-                  color="danger"
-                  onClick={() => handleDelete(userAccountId)}
-                >
+                <Button color="danger" onClick={() => handleDelete(empId)}>
                   Delete
                 </Button>
               </ModalFooter>
