@@ -36,7 +36,6 @@ export default function PopoverBox({ data }: NotificationPageProps) {
     }
   };
 
-  // console.log(data);
   const currentDate = new Date();
 
   const filteredNotifications = data.filter((notification) => {

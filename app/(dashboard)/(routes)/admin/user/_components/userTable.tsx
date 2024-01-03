@@ -27,9 +27,9 @@ import { Plus, Search, Trash2, Eye, Trash } from "lucide-react";
 import { columns, statusOptions } from "/utils/userTable.ts";
 import { capitalize } from "/utils/table";
 import { toast } from "sonner";
-import { Add } from "./(action)/add";
-import { Delete } from "./(action)/delete";
 import { useRouter } from "next/navigation";
+import { Add } from "./(actions)/add";
+import { Delete } from "./(actions)/delete";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   true: "success",

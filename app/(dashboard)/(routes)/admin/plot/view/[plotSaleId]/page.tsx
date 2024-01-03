@@ -16,11 +16,10 @@ const PlotSales = async ({ params }: { params: { plotSaleId: string } }) => {
       },
     },
   });
-  console.log(plot);
 
   return (
     <div>
-      <PlotAccountTable empId={plot} initialData={plot?.plotPayemnts} />
+      <PlotAccountTable saleId={plot} initialData={plot?.plotPayemnts} />
     </div>
   );
 };

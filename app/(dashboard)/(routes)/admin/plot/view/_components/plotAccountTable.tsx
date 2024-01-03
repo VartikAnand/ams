@@ -60,12 +60,14 @@ type LandPaymentData = {
   remainingAmount: number;
 };
 interface PaymentTableProps {
-  farmerId: string;
-  farmerData: string;
+  saleId: string;
   initialData: LandPaymentData[];
 }
 
-export const PlotAccountTable = ({ farmerId, initialData, farmerData }) => {
+export const PlotAccountTable = ({
+  saleId,
+  initialData,
+}: PaymentTableProps) => {
   const [filterValue, setFilterValue] = useState<string>("");
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]));
   const [visibleColumns, setVisibleColumns] = useState<Selection>(
@@ -312,7 +314,7 @@ export const PlotAccountTable = ({ farmerId, initialData, farmerData }) => {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Add userData={farmerData} />
+            <Add userData={saleId} />
           </div>
         </div>
         {/* <TopContent initialData={initialData} farmerData={farmerData} /> */}
@@ -339,9 +341,8 @@ export const PlotAccountTable = ({ farmerId, initialData, farmerData }) => {
     filterValue,
     onSearchChange,
     visibleColumns,
-    farmerId,
-    initialData,
-    farmerData,
+    saleId,
+    initialData.length,
     onRowsPerPageChange,
     onClear,
   ]);

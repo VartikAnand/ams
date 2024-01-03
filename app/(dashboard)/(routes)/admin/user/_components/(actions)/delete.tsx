@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Trash } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import {
   Modal,
   ModalContent,
@@ -14,36 +14,36 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import axios from "axios";
 
-interface DeleteProps {
-  empId: string;
+interface DeletePaymentProps {
+  userAccountId: string;
 }
 
-export const PlotDelete = ({ empId }: DeleteProps) => {
+export const Delete = ({ userAccountId }: DeletePaymentProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
   const handleOpen = () => {
     onOpen();
   };
-  const handleDelete = async (empId: string) => {
+
+  const handleDelete = async (userAccountId: string) => {
     try {
+      await axios.delete(`/api/user/${userAccountId}`);
       await toast.promise(
         async () => {
-          try {
-            await axios.delete(`/api/plotSale/${empId}`);
-            return { name: "Plot Deleted", status: "success" };
-          } catch (error) {
-            toast.error("Something went wrong");
-            throw new Error("Error in Deleting");
-          }
-          router.push("/admin/plot");
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+          return { name: "Payment", status: "success" };
         },
         {
-          loading: "Deleting Complete Data...",
-          success: (data) => `Deleted Successfully`,
-          error: (error) => `${error}`,
+          loading: "Deleting Payment Data...",
+          success: (data) => `${data.name} Deleted Successfully`,
+          error: "Error in  Deleting ",
         }
       );
+
+      router.refresh();
+      window.location.reload();
     } catch (error) {
+      console.error("Error:", error);
       toast.error("Something went wrong");
     }
   };
@@ -52,12 +52,14 @@ export const PlotDelete = ({ empId }: DeleteProps) => {
     <div>
       <div className="flex flex-wrap gap-3">
         <Button
+          size="sm"
+          className="p-1"
           isIconOnly
           variant="flat"
           color="danger"
-          onClick={() => handleOpen()}
+          onPress={() => handleOpen()}
         >
-          <Trash />
+          <Trash2 />
         </Button>
       </div>
       <Modal
@@ -80,14 +82,17 @@ export const PlotDelete = ({ empId }: DeleteProps) => {
               <ModalBody>
                 <p className="text-sm font-normal ">
                   This action cannot be undone. This will permanently delete
-                  your data and remove from our servers.
+                  your account and remove your data from our servers.
                 </p>
               </ModalBody>
               <ModalFooter>
-                <Button color="primary" variant="light" onClick={onClose}>
+                <Button color="primary" variant="light" onPress={onClose}>
                   Close
                 </Button>
-                <Button color="danger" onClick={() => handleDelete(empId)}>
+                <Button
+                  color="danger"
+                  onClick={() => handleDelete(userAccountId)}
+                >
                   Delete
                 </Button>
               </ModalFooter>

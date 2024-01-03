@@ -46,7 +46,7 @@ const EmpId = async ({ params }: { params: { empId: string } }) => {
     employee.employeeDetails?.state,
     employee.employeeDetails?.pinCode,
     employee.employeeDetails?.phoneNumber,
-    employee.employeeDetails?.aadhazrNumber,
+    // employee.employeeDetails?.aadhazrNumber,
   ];
 
   const totalFields = requiredFields.length;

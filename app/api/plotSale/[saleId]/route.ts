@@ -12,8 +12,7 @@ export async function PATCH(
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
-    console.log(JSON.stringify(values));
-    console.log(JSON.stringify(saleId));
+
     const plotSale = await db.plotSale.update({
       where: {
         saleId: saleId,
@@ -24,7 +23,6 @@ export async function PATCH(
     });
     return NextResponse.json(plotSale);
   } catch (err) {
-    console.log(err);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

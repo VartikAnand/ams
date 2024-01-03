@@ -13,18 +13,20 @@ export const Add = ({ userData }: userDataProps) => {
   const router = useRouter();
   const handlePaymentButtonClick = async () => {
     try {
-      // const response = await axios.post(
-      //   `/api/farmers/${userData}/farmerPayment`,
-      //   { id: userData }
-      // );
+      const response = await axios.post(
+        `/api/plotSale/${userData.saleId}/plotPayment`,
+        {
+          id: userData.saleId,
+        }
+      );
 
       const promise = () => new Promise((resolve) => setTimeout(resolve, 1000));
       toast.promise(promise, {
         loading: "Loading...",
-        success: "Adding Farmer Payment ",
+        success: "Adding Plot Payment ",
         error: "Error",
       });
-      // router.push(`/admin/farmerEntry/create/payment/${response.data.payId}`);
+      router.push(`/admin/plot/create/plotPayment/${response.data.payId}`);
     } catch (error) {
       console.error("Error:", error);
       toast.error("Try Again !! Something went wrong");
