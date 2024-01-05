@@ -1,7 +1,30 @@
-import React from "react";
+import { FarmerTable } from "./_components/farmerTable";
+import { db } from "@/lib/db";
 
-const FarmerPage = () => {
-  return <div>FarmerPage</div>;
+const Farmer = async () => {
+  const farmer = await db.farmer.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+    include: {
+      farmerDetails: true,
+      farmerNotes: {
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
+      farmerPayments: {
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
+    },
+  });
+  return (
+    <div>
+      <FarmerTable farmerId={farmer.id} initialData={farmer} />
+    </div>
+  );
 };
 
-export default FarmerPage;
+export default Farmer;

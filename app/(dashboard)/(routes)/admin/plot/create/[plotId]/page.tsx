@@ -14,11 +14,21 @@ import { PlotDelete } from "./_components/delete";
 import { Save } from "./_components/save";
 import { toast } from "sonner";
 import { redirect } from "next/navigation";
+import { PlotArea } from "./_components/plotArea";
 
 const PlotId = async ({ params }: { params: { plotId: string } }) => {
   const plot = await db.plotSale.findUnique({
     where: {
       saleId: params.plotId,
+    },
+  });
+
+  const plotSale = await db.plotSale.findMany({
+    where: {
+      khasraNumber: plot.khasraNumber,
+    },
+    orderBy: {
+      createdAt: "desc",
     },
   });
 
@@ -98,6 +108,14 @@ const PlotId = async ({ params }: { params: { plotId: string } }) => {
           {/* PlotNumber Form */}
           <PlotNumberForm initialData={plot} saleId={plot.saleId} />
 
+          {/* Plot area */}
+          <PlotArea
+            initialData={plot}
+            saleId={plot.saleId}
+            landData={land}
+            plotData={plotSale}
+          />
+
           {/* Plot Price */}
 
           <PlotPriceForm initialData={plot} saleId={plot.saleId} />
@@ -119,10 +137,8 @@ const PlotId = async ({ params }: { params: { plotId: string } }) => {
 
           <AddressForm initialData={plot} farmerId={plot.saleId} />
           <PhoneNumberForm initialData={plot} farmerId={plot.saleId} />
+          <DocUrlForm initialData={plot} saleId={plot.saleId} />
         </div>
-      </div>
-      <div>
-        <DocUrlForm initialData={plot} saleId={plot.saleId} />
       </div>
     </div>
   );

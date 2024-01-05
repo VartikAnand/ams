@@ -14,6 +14,7 @@ import { db } from "@/lib/db";
 import { toast } from "sonner";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
 
 interface NotificationPageProps {
   notificationData: NotificationData[];
@@ -21,6 +22,10 @@ interface NotificationPageProps {
 export default function PopoverBox({ data }: NotificationPageProps) {
   const router = useRouter();
 
+  const { isLoaded, isSignedIn, user } = useUser();
+  if (!isLoaded || !isSignedIn) {
+    return null;
+  }
   const onSubmit = async (notification) => {
     try {
       const currentDate = new Date();
@@ -28,6 +33,8 @@ export default function PopoverBox({ data }: NotificationPageProps) {
       await axios.patch(`/api/notification/${notification.notiId}`, {
         readTime: currentDate,
         isRead: true,
+        readByUuid: user.id,
+        readByName: user.username,
       });
       toast.success("Marked as Read");
       router.refresh();
@@ -80,7 +87,7 @@ export default function PopoverBox({ data }: NotificationPageProps) {
     <div className="flex flex-wrap gap-4">
       <Popover
         radius="lg"
-        // showArrow
+        showArrow
         offset={10}
         placement="bottom"
         backdrop="transparent"
@@ -89,6 +96,7 @@ export default function PopoverBox({ data }: NotificationPageProps) {
         <PopoverTrigger>
           <div className="cursor-pointer p-1">
             <Badge
+              isInvisible={unreadNotifications.length > 0 ? false : true}
               content={`${unreadNotifications.length}`}
               shape="circle"
               color="danger"

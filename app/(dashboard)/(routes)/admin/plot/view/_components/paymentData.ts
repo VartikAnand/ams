@@ -12,7 +12,7 @@ const columns = [
 
   { name: "Left Amount", uid: "leftAmount", sortable: true },
   { name: "Particular", uid: " particular" },
-  { name: "Notes", uid: "  notes" },
+  { name: "Notes", uid: "notes" },
 
   { name: "Payment Received", uid: "paymentRecivedBy", sortable: true },
 

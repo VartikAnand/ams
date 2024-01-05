@@ -11,11 +11,25 @@ export async function POST(req: Request) {
     }
     const values = await req.json();
 
-    const response = await db.plotSale.create({
-      data: { farmerLandId: values.farmerLandId },
+    const farmerLand = await db.farmer.findUnique({
+      where: {
+        id: values.farmerLandId,
+      },
     });
 
-    return NextResponse.json(response);
+    if (farmerLand) {
+      const response = await db.plotSale.create({
+        data: {
+          farmerLandId: values.farmerLandId,
+          khasraNumber: farmerLand.khasraNumber,
+        },
+      });
+
+      return NextResponse.json(response);
+    } else {
+      console.error("[Land Data Not Found ] Error:", error);
+      return new NextResponse("Internal Error", { status: 500 });
+    }
   } catch (error) {
     console.error("[PLOT SALE CREATE] Error:", error);
     return new NextResponse("Internal Error", { status: 500 });

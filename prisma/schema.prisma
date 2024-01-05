@@ -82,6 +82,7 @@ model plotSale {
 
   plotNumber           Int?    @unique
   plotPrice            Int?
+  plotArea             Int?
   customerName         String? @db.Text
   custommerAddress     String? @db.Text
   customerPinCode      Int?
@@ -240,7 +241,7 @@ model notification {
   readByUuid String?   @db.Text
   readByName String?   @db.Text
   readTime   DateTime?
-  payId      String?   @db.Text
+  payId      String?   @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

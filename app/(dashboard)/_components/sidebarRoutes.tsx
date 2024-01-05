@@ -44,16 +44,7 @@ const guestRoutes = [
     label: "Plot Selling",
     href: "/plotSelling",
   },
-  {
-    icon: Landmark,
-    label: "Loan",
-    href: "/loan",
-  },
-  {
-    icon: IndianRupee,
-    label: "Daily Expenses",
-    href: "/dailyExpenses",
-  },
+
   {
     icon: User,
     label: "Personal Entry",
@@ -89,16 +80,6 @@ const adminRoutes = [
     icon: Ratio,
     label: "Plot Selling Entry",
     href: "/admin/plot",
-  },
-  {
-    icon: Landmark,
-    label: "Loan Entry",
-    href: "/admin/loan",
-  },
-  {
-    icon: IndianRupee,
-    label: "Daily Expenses Entry",
-    href: "/admin/dailyExpenses",
   },
 ];
 

@@ -18,35 +18,18 @@ export async function PATCH(
 
     const values = await req.json();
 
-    const user = await db.user.findUnique({
+    const notification = await db.notification.update({
       where: {
-        userId: userId,
+        notiId: notiId,
+      },
+      data: {
+        ...values,
       },
     });
 
-    if (user) {
-      const notification = await db.notification.update({
-        where: {
-          notiId: notiId,
-        },
-        data: {
-          ...values,
-          readByUuid: user.uuid,
-          readByName: `${user.firstName} ${user.lastName}`,
-        },
-      });
-
-      return new NextResponse(JSON.stringify(notification), {
-        status: 200,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-    } else {
-      return new NextResponse("User not found", { status: 404 });
-    }
+    return new NextResponse(notification);
   } catch (err) {
-    console.error("Error in PATCH request:", err);
+    console.error("NOTIFICATION ERROR", err);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

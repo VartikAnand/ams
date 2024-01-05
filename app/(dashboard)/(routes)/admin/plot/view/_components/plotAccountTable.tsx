@@ -20,6 +20,7 @@ import {
   Selection,
   ChipProps,
   SortDescriptor,
+  Link,
 } from "@nextui-org/react";
 
 import { Plus, MoreVertical, Search } from "lucide-react";
@@ -133,8 +134,9 @@ export const PlotAccountTable = ({
 
   const renderCell = useCallback((user: UserData, columnKey: React.Key) => {
     const cellValue = user[columnKey as keyof UserData];
+    const leftAmount = (user?.tottalAmount || 0) - (user?.paidAmount || 0);
+
     switch (columnKey) {
-      //paid amount
       case "tottalAmount":
         return (
           <p>&#8377; {user?.tottalAmount?.toLocaleString("en-IN") || "0"}</p>
@@ -144,19 +146,32 @@ export const PlotAccountTable = ({
           <p>&#8377; {user?.paidAmount?.toLocaleString("en-IN") || "0"}</p>
         );
 
-      // bonus
       case "leftAmount":
         return (
           <p className="text-primary">
-            {user?.leftAmount
-              ? `₹ ${user.leftAmount.toLocaleString("en-IN")}`
+            {leftAmount >= 0
+              ? `₹ ${leftAmount.toLocaleString("en-IN")}`
               : "Nil"}
           </p>
         );
       case " particular":
         return <p>{user?.particular}</p>;
+      case "notes":
+        return (
+          <p className="text-sm mt-2 overflow-auto">
+            {user?.notes &&
+              (user?.notes.startsWith("https://") ||
+              user?.notes.startsWith("http://") ||
+              user?.notes.startsWith("www.") ? (
+                <Link href={user?.notes} color="warning" underline="always">
+                  <p className="text-sm  overflow-auto">Doc&apos;s Url</p>
+                </Link>
+              ) : (
+                user?.notes || "No Notes"
+              ))}
+          </p>
+        );
 
-      // bONUS dATE
       case "bonusDate":
         return (
           <p>
@@ -170,7 +185,6 @@ export const PlotAccountTable = ({
           </p>
         );
 
-      // deduction
       case "deduction":
         return (
           <p className="text-danger">
@@ -179,7 +193,7 @@ export const PlotAccountTable = ({
               : "Nil"}
           </p>
         );
-      // deduction dATE
+
       case "deductionDate":
         return (
           <p>
@@ -193,30 +207,27 @@ export const PlotAccountTable = ({
           </p>
         );
 
-      // paymentGivenBy
-      //Payment Type
       case "isPaymentAdded":
         return (
           <Chip
-            className="capitalize px-2 py-1"
-            color={statusColorMap[user.netSalary]}
+            className="capitalize  py-1 flex text-center px-2"
+            color={statusColorMap[user.isPaymentAdded]}
             size="sm"
             variant="bordered"
           >
-            {user.netSalary ? "Given" : "pending"}
+            {user.isPaymentAdded ? "Paid" : "Failed"}
           </Chip>
         );
-      // TOtal Area
+
       case "paymentMode":
         return <p>{user?.paymentMode}</p>;
-      // Per sq cost
+
       case "paymentModeId":
         return <p>{user?.paymentModeId}</p>;
-      // Total Land  cost
+
       case "paymentModeInfo":
         return <p> {user?.paymentModeInfo}</p>;
 
-      // createdAt
       case "createdAt":
         return (
           <p>
@@ -272,8 +283,6 @@ export const PlotAccountTable = ({
     setFilterValue("");
     setPage(1);
   }, []);
-
-  // TOP CONETENT
 
   const topContent = useMemo(() => {
     return (
@@ -387,7 +396,6 @@ export const PlotAccountTable = ({
   return (
     <div className="lg:mx-5 mx-2 ">
       <Table
-        // onRowAction={(key) => toast.success("Success")}
         isCompact
         aria-label="farmer table"
         isHeaderSticky

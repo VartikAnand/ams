@@ -10,15 +10,25 @@ export async function POST(req: Request) {
     }
 
     const { id } = await req.json();
-    console.log(id);
-    const response = await db.plotPayemnt.create({
-      data: {
-        userUuid: userId,
-        plotPayId: id,
+
+    const plotData = await db.plotSale.findUnique({
+      where: {
+        saleId: id,
       },
     });
 
-    return NextResponse.json(response);
+    if (plotData) {
+      const response = await db.plotPayemnt.create({
+        data: {
+          plotPayId: id,
+          tottalAmount: plotData.plotPrice,
+        },
+      });
+
+      return NextResponse.json(response);
+    } else {
+      return new NextResponse("Internal Error", { status: 500 });
+    }
   } catch (error) {
     console.error("[PLOT PAYMENT] Error:", error);
     return new NextResponse("Internal Error", { status: 500 });
