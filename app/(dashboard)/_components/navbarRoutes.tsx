@@ -20,7 +20,7 @@ const NavbarRoutes = ({ Notidata }) => {
   return (
     <div className="flex gap-x-2 ml-auto">
       <PopoverBox data={Notidata} />
-      <div className="hidden sm:block">
+      <div className="mt-0.5">
         <ThemeSwitcher />
       </div>
 
@@ -38,7 +38,7 @@ const NavbarRoutes = ({ Notidata }) => {
           </Button>
         </Link>
       )}
-      <UserButton afterSignOutUrl="/" />
+      {/* <UserButton afterSignOutUrl="/" /> */}
     </div>
   );
 };

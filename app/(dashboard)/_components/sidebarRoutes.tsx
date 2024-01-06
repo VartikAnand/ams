@@ -10,6 +10,7 @@ import {
   Landmark,
   IndianRupee,
   Blocks,
+  Sliders,
 } from "lucide-react";
 import SidebarItems from "./sidebarItems";
 import { usePathname } from "next/navigation";
@@ -29,11 +30,7 @@ const guestRoutes = [
     label: "Farmer",
     href: "/farmer",
   },
-  {
-    icon: User,
-    label: "Personal",
-    href: "/personal",
-  },
+
   {
     icon: Wallet2,
     label: "Salary",
@@ -44,11 +41,15 @@ const guestRoutes = [
     label: "Plot Selling",
     href: "/plotSelling",
   },
-
   {
     icon: User,
-    label: "Personal Entry",
-    href: "/admin/personal",
+    label: "User",
+    href: "/personal",
+  },
+  {
+    icon: Sliders,
+    label: "Account",
+    href: "/userAccount",
   },
 ];
 
@@ -57,7 +58,7 @@ const guestRoutes = [
 const adminRoutes = [
   {
     icon: Blocks,
-    label: "Main Entry",
+    label: "Admin Dashboard",
     href: "/admin/mainEntry",
   },
   {
@@ -103,9 +104,9 @@ const SidebarRoutes = () => {
       </div>
       <div className="my-3 px-2">
         <Divider className="my-4 " />
-        <div className="sm:hidden">
+        {/* <div className="sm:hidden">
           <ThemeSwitcher />
-        </div>
+        </div> */}
 
         <UserSetting />
       </div>

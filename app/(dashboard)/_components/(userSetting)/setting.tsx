@@ -1,3 +1,5 @@
+"use client";
+import { SignOutButton, useAuth, UserProfile } from "@clerk/nextjs";
 import React from "react";
 import {
   Dropdown,
@@ -7,22 +9,37 @@ import {
   Button,
 } from "@nextui-org/react";
 import { UserCog } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const UserSetting = () => {
+  const { sessionId } = useAuth();
+  const router = useRouter();
+
+  const handleItemClick = (key) => {
+    if (key === "1") {
+      router.push("/profile");
+    } else if (key === "2") {
+      router.push("/admin/addAdmin");
+    }
+  };
+
   const items = [
     {
       key: "1",
       label: "Profile",
     },
-    {
-      key: "2",
-      label: "Account",
-    },
+    // {
+    //   key: "2",
+    //   label: "Add Admin",
+    // },
     {
       key: "Setting",
-      label: "Setting",
+      label: (
+        <SignOutButton signOutOptions={{ sessionId }} afterSignOutUrl="/" />
+      ),
     },
   ];
+
   return (
     <Dropdown>
       <DropdownTrigger>
@@ -39,9 +56,10 @@ const UserSetting = () => {
       <DropdownMenu color="primary" aria-label="Dynamic Actions" items={items}>
         {(item) => (
           <DropdownItem
+            onAction={(key) => handleItemClick(key)} // Handle item click
             key={item.key}
             color={item.key === "Setting" ? "primary" : "default"}
-            className={item.key === "Setting" ? "text-primary" : ""}
+            className={item.key === "Setting" ? "text-danger" : ""}
           >
             {item.label}
           </DropdownItem>
