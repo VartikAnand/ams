@@ -5,7 +5,7 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div
       style={{
-        backgroundImage: `url('/main.png')`,
+        backgroundImage: `url('/main.svg')`,
       }}
       className="h-screen bg-cover bg-center p-0 m-0 pt-0 w-full bg-backgroundColor"
     >
